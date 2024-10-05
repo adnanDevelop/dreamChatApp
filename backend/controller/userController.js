@@ -1,6 +1,7 @@
 import { User } from "../model/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { errorHandler, responseHandler } from "../utils/handler.js";
 
 // Register Controller
 export const register = async (req, res) => {
@@ -32,8 +33,8 @@ export const register = async (req, res) => {
     });
     res.status(201).json({ message: "User created successfully", newUser });
   } catch (error) {
-    console.log(error);
-    return res.status(400).json({ message: error.message });
+    return errorHandler(res, 400, error.message);
+    // return res.status(400).json({ message: error.message });
   }
 };
 
@@ -90,6 +91,7 @@ export const login = async (req, res) => {
       });
   } catch (error) {
     console.log(error, "Error while loging user");
+    return errorHandler(res, 400, error.message);
   }
 };
 
@@ -113,8 +115,9 @@ export const getAllUsers = async (req, res) => {
     console.log(userId, "loggedIn user");
 
     const users = await User.find({ _id: { $ne: userId } }).select("-password");
-    res.status(200).json({ data: users });
+    return responseHandler(res, 200, users, "Data retreived successfully");
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    return errorHandler(res, 400, error.message);
+    // res.status(400).json({ message: error.message });
   }
 };
