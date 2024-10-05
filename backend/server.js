@@ -6,7 +6,9 @@ dotenv.config({ path: ".env" });
 import connectDb from "./db/db.js";
 import cookieParser from "cookie-parser";
 
+// Routes Files
 import userRoute from "./routes/userRoute.js";
+import messageRoute from "./routes/messageRoute.js";
 
 // Configure CORS
 const corsOptions = {
@@ -20,7 +22,9 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 
+// Routes
 app.use("/api/auth", userRoute);
+app.use("/api/message", messageRoute);
 
 // Server running
 const PORT = process.env.PORT || 3000;

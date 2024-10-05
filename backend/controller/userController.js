@@ -95,6 +95,21 @@ export const login = async (req, res) => {
   }
 };
 
+// Delete User Controller
+export const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const deleteUser = await User.deleteOne({ _id: userId });
+    if (deleteUser.deletedCount !== 1) {
+      return errorHandler(res, 400, "User not deleted");
+    } else {
+      return responseHandler(res, 200, "User deleted successfully");
+    }
+  } catch (error) {
+    return errorHandler(res, 400, error.message);
+  }
+};
+
 // Logout Controller
 export const logout = async (req, res) => {
   try {
