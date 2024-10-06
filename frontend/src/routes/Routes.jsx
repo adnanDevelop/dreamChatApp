@@ -8,6 +8,7 @@ import Layout from "../components/layout/Layout";
 import Login from "../modules/authPages/Login";
 import NotFound from "../modules/notFound/NotFound";
 import Register from "../modules/authPages/Register";
+import Dashboard from "../modules/chatDashboard/Dashboard";
 
 export const Routes = () => {
   return useRoutes([
@@ -23,7 +24,7 @@ export const Routes = () => {
           index: true,
           element: <Navigate to="/chat" replace />,
         },
-        // { path: "recruiter/jobs", element: <RecruitorJobs /> },
+        { path: "/chat", element: <Dashboard /> },
       ],
     },
     {
