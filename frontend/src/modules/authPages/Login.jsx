@@ -1,98 +1,80 @@
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../redux/slices/authSlice";
+
+// Icons
+import { FaUser } from "react-icons/fa";
+import { LuPhone } from "react-icons/lu";
+import { FaRegEye } from "react-icons/fa6";
+import { MdOutlineMail } from "react-icons/md";
 
 // Types
 // import { userApiEndPoint } from "../../utils/apiEndPoints";
 
-// Redux
-import { login } from "../../redux/slices/authSlice";
-// import { useLoginUserMutation } from "../../redux/features/authApi";
-
 const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.auth);
+  const loading = useSelector((state) => state.auth.loading);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  // const [lognUser] = useLoginUserMutation();
-
-  // Submit data
+  // Submit function
   const submitData = async (data) => {
-    try {
-      dispatch(setLoading(true));
-
-      // lognUser({ body: data })
-      //   .unwrap()
-      //   .then((response) => {
-      //     dispatch(login(response.data));
-      //     toast.success(response.message);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     toast.error(error.data.message);
-      //   });
-
-      const response = await fetch(`https://localhost:3000/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        dispatch(login(responseData.data));
-        toast.success(responseData.message);
-
-        // navigate("/");
-      } else {
-        const errorData = await response.json();
-        toast.error(errorData.message);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      dispatch(setLoading(false));
-    }
+    console.log(data);
+    // try {
+    //   dispatch(setLoading(true));
+    //   const response = await fetch(`https://localhost:3000/register`, {
+    //     method: "POST",
+    //     body: JSON.stringify(data),
+    //     credentials: "include",
+    //   });
+    //   if (response.ok) {
+    //     const responseData = await response.json();
+    //     navigate("/login");
+    //     toast.success(responseData.message);
+    //   } else {
+    //     const errorData = await response.json();
+    //     toast.error(
+    //       errorData.message || "An error occurred during registration"
+    //     );
+    //   }
+    // } catch (error) {
+    //   console.log("Error while registering user", error);
+    //   toast.error("An error occurred. Please try again.");
+    // } finally {
+    //   dispatch(setLoading(false));
+    // }
   };
 
   return (
-    <main className="w-full relaive z-[1] h-screen bg-[url('/image/auth-bg.jpg')] bg-no-repeat bg-center bg-cover">
-      <div className="fixed top-0  left-0 w-full h-full bg-gradient-to-b from-transparent to-[#161c2d]" />
-      <div className="relative z-[1] flex items-center justify-center w-full h-full  px-[20px]">
-        {/* Form section */}
-        <form
-          className="max-w-[400px] w-full p-4 bg-dark-blue rounded-lg"
-          onSubmit={handleSubmit(submitData)}
-        >
-          <img
-            src="/image/logo-light.png"
-            className="w-[120px] xl:w-[150px] h-auto object-cover mx-auto"
-            alt=""
-          />
-          <h1 className="!text-white font-poppin font-medium my-2 xl:text-[25px]">
-            Login
-          </h1>
+    <main className=" w-full gradient p-[40px] h-screen">
+      {/* Logo */}
+      <img src="/image/logo.svg" className="block mx-auto" alt="" />
 
-          {/* email input */}
-          <div className="mb-2">
-            <label className="text-xs text-white xl:text-sm font-poppin">
-              Your Email:
-            </label>
+      {/* Form Section */}
+      <form
+        className="block max-w-[550px] py-4 px-5 shadow-md mx-auto bg-white rounded-lg mt-6"
+        onSubmit={handleSubmit(submitData)}
+      >
+        <h3 className="text-[28px] font-semibold black">Login</h3>
+        <p className="text-sm text-content">
+          Sign in to see what you’ve missed.
+        </p>
+
+        {/* Email input */}
+        <div>
+          <p className="mb-1.5 text-sm font-medium text-[#141B27]">Email</p>
+          <div className="w-full h-[40px] flex border border-[#f0e8e8] px-1.5 rounded-md">
+            <div className="w-[30px] h-full  flex items-center justify-center">
+              <MdOutlineMail className="text-base text-[#bab2b2]" />
+            </div>
             <input
               type="email"
-              className="mt-1 w-full h-[40px] placeholder:text-slate text-slate rounded-md px-2 border text-xs focus:outline-none border-[#94a3b857] bg-transparent focus:border-green"
-              placeholder="Testing@gmail.com"
               {...register("email", {
                 required: "Email is required",
                 pattern: {
@@ -100,89 +82,51 @@ const Login = () => {
                   message: "Invalid email address",
                 },
               })}
+              className="w-full text-xs border-none text-content placeholder:text-content focus:outline-none"
             />
-            {errors.email && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.email.message}
-              </p>
-            )}
           </div>
-
-          {/* password input */}
-          <div className="mb-2">
-            <label
-              htmlFor="password"
-              className="text-xs text-white xl:text-sm font-poppin"
-            >
-              Password:
-            </label>
+          {errors.email && (
+            <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
+          )}
+        </div>
+        <div>
+          <p className="mb-1.5 text-sm font-medium text-[#141B27]">Password</p>
+          <div className="w-full h-[40px] flex border border-[#f0e8e8] px-1.5 rounded-md">
+            <div className="w-[30px] h-full  flex items-center justify-center">
+              <FaRegEye className="text-base text-[#bab2b2]" />
+            </div>
             <input
               type="password"
-              className="mt-1 w-full h-[40px] placeholder:text-slate text-slate rounded-md px-2 border text-xs focus:outline-none border-[#94a3b857] bg-transparent focus:border-green"
-              placeholder="Harry"
-              {...register("password", { required: "Name is required" })}
-              onFocus={(e) => (e.target.type = "text")}
-              onBlur={(e) => (e.target.type = "password")}
+              {...register("password", {
+                required: "Password is required",
+              })}
+              className="w-full text-xs border-none text-content placeholder:text-content focus:outline-none"
             />
-            {errors.password && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.password.message}
-              </p>
-            )}
           </div>
-
-          {/* Select role */}
-          <div>
-            <span className="text-xs text-white font-poppin xl:text-sm">
-              Select Role:
-            </span>
-            <div className="flex mt-2 gap-x-4">
-              <div className="flex items-center text-xs text-white gap-x-1">
-                <input
-                  type="radio"
-                  className="radio radio-xs radio-accent"
-                  value="student"
-                  {...register("role", { required: "Role is required" })}
-                />
-                <span>Student</span>
-              </div>
-              <div className="flex items-center text-xs text-white gap-x-1">
-                <input
-                  type="radio"
-                  className="radio radio-xs radio-accent"
-                  value="recruitor"
-                  {...register("role", { required: "Role is required" })}
-                />
-                <span>Recruitor</span>
-              </div>
-            </div>
-            {errors.role && (
-              <p className="mt-1 text-xs text-red-500">{errors.role.message}</p>
-            )}
-          </div>
-
-          {/* Submit button */}
-          <div className="mt-3">
-            <button
-              type="submit"
-              className="flex items-center justify-center w-full primary-btn"
-              disabled={loading}
-            >
-              {loading ? (
-                <span className="loading loading-dots loading-md"></span>
-              ) : (
-                "Login"
-              )}
-            </button>
-            <p className="mt-2 text-xs text-center text-white">
-              Don&apos;t have an account?{" "}
-              <Link to="/register" className="font-semibold text-green">
-                Register
-              </Link>
+          {errors.password && (
+            <p className="mt-1 text-xs text-red-500">
+              {errors.password.message}
             </p>
-          </div>
-        </form>
-      </div>
+          )}
+        </div>
+
+        <div className="mt-6">
+          <button className="w-full primary-btn">
+            {" "}
+            {loading ? (
+              <span className="loading loading-dots loading-md"></span>
+            ) : (
+              "Register"
+            )}
+          </button>
+          <p className="mt-2 text-sm text-center">
+            Already have a account?{" "}
+            <Link to="/login" className="text-primary">
+              Sign In
+            </Link>
+          </p>
+        </div>
+      </form>
     </main>
   );
 };

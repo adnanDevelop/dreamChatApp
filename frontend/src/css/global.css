@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply !overflow-x-hidden font-jakarta bg-dark-blue;
+    @apply !overflow-x-hidden font-roboto;
   }
 
   .transitions {
@@ -22,7 +22,7 @@
   }
 
   .primary-btn {
-    @apply h-[40px] rounded-md text-white font-poppin font-medium capitalize text-[13px] transitions hover:scale-[1.05] bg-green;
+    @apply h-[40px] rounded-md text-white bg-primary font-poppin font-medium capitalize text-[13px] transitions hover:scale-[1.05];
   }
 
   .secondary-btn {
@@ -30,6 +30,6 @@
   }
 
   .primary-btn-outline {
-    @apply h-[40px] rounded-md text-white font-poppin font-medium capitalize text-[13px] transitions hover:scale-[1.05] bg-[#05966835] border border-green hover:bg-green;
+    @apply h-[40px] rounded-md text-white font-poppin font-medium capitalize text-[13px] transitions hover:scale-[1.05] bg-[#05966835] border;
   }
 }

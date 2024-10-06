@@ -5,12 +5,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        "dark-blue": "#0F172A",
-        green: "#059669",
-        slate: "#94A3B8",
-        ouline: "#1F2937FF",
-        color: "#94a3b857",
-        "light-blue": "#1E293B",
+        primary: "#734cf7",
+        content: "#72767D",
       },
       boxShadow: {
         "custom-light": "0px 0.5px 10px rgba(0, 0, 0, 0.08)",
@@ -35,10 +31,8 @@ export default {
     themes: [
       {
         mytheme: {
-          "light-black": "#2F3941",
-          "dark-gray": "#68737D",
-          "warning-red": "#C03221",
-          success: "#059669",
+          primary: "#734cf7",
+          content: "#72767D",
         },
       },
     ],
