@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseUrl } from "../baseUrl";
 
 const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api/v1/user",
+    baseUrl: `${baseUrl}/auth`,
     credentials: "include",
   }),
   tagTypes: ["users"],
@@ -13,7 +14,7 @@ const authApi = createApi({
       query: (payload) => ({
         url: "/register",
         method: "POST",
-        params: payload.params,
+        body: payload.body,
       }),
     }),
 
@@ -34,12 +35,30 @@ const authApi = createApi({
         // body: payload.body,
       }),
     }),
+
+    // Delete User
+    deleteUser: builder.mutation({
+      query: (payload) => ({
+        url: `/delete/${payload.id}`,
+        method: "DELETE",
+      }),
+    }),
+
+    // Get all users
+    getUser: builder.query({
+      query: () => ({
+        url: `/user`,
+        method: "Get",
+      }),
+    }),
   }),
 });
 
 export const {
+  useGetUserQuery,
   useLogoutUserQuery,
   useLoginUserMutation,
+  useDeleteUserMutation,
   useRegisterUserMutation,
 } = authApi;
 

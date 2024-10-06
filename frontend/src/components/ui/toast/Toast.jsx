@@ -13,7 +13,7 @@ const ToastProvider = () => {
       pauseOnFocusLoss
       draggable
       pauseOnHover
-      theme="dark"
+      // theme="dark"
     />
   );
 };

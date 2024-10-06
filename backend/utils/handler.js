@@ -3,7 +3,5 @@ export const errorHandler = (res, code, message) => {
 };
 
 export const responseHandler = (res, code, data, message) => {
-  return res
-    .status(code)
-    .json({ status_code: code, message, data: data && data });
+  return res.status(code).json({ status: code, message, data: data && data });
 };

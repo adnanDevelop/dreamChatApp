@@ -33,10 +33,6 @@ const userSchema = new mongoose.Schema(
       enum: ["male", "female"],
       default: "male",
     },
-    profilePhoto: {
-      type: String,
-      default: "",
-    },
   },
   { timestamps: true }
 );

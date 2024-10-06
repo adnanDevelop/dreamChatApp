@@ -6,9 +6,16 @@ import { errorHandler, responseHandler } from "../utils/handler.js";
 // Register Controller
 export const register = async (req, res) => {
   try {
-    const { fullName, userName, email, password, gender } = req.body;
-    console.log(req.body);
-    if (!fullName || !userName || !email || !password || !gender) {
+    const { fullName, userName, email, password, gender, phoneNumber } =
+      req.body;
+    if (
+      !fullName ||
+      !userName ||
+      !email ||
+      !password ||
+      !gender ||
+      !phoneNumber
+    ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -23,18 +30,19 @@ export const register = async (req, res) => {
     const malePicture = `https://avatar.iran.liara.run/public/boy?username=${userName}`;
     const femalePicture = `https://avatar.iran.liara.run/public/girl?username=${userName}`;
 
-    const newUser = await User.create({
+    const data = await User.create({
       fullName,
       userName,
       email,
       password: hashPassword,
       gender,
+      phoneNumber,
       profilePhoto: gender === "male" ? malePicture : femalePicture,
     });
-    res.status(201).json({ message: "User created successfully", newUser });
+    return responseHandler(res, 200, data, "User created successfully");
+    // res.status(201).json({ message: "User created successfully", data });
   } catch (error) {
     return errorHandler(res, 400, error.message);
-    // return res.status(400).json({ message: error.message });
   }
 };
 

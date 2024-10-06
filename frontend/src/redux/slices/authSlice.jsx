@@ -11,9 +11,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setLoading: (state, action) => {
-      state.loading = action.payload;
-    },
     setUser: (state, action) => {
       state.user = action.payload;
       setCookie("userData", JSON.stringify(action.payload));
@@ -32,5 +29,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setLoading, setUser, login, logout } = authSlice.actions;
+export const { setUser, login, logout } = authSlice.actions;
 export default authSlice.reducer;

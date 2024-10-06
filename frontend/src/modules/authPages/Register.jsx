@@ -1,8 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../redux/slices/authSlice";
+import { useRegisterUserMutation } from "../../redux/features/authApi";
 
 // Icons
 import { FaUser } from "react-icons/fa";
@@ -10,49 +9,32 @@ import { LuPhone } from "react-icons/lu";
 import { FaRegEye } from "react-icons/fa6";
 import { MdOutlineMail } from "react-icons/md";
 
-// Types
-// import { userApiEndPoint } from "../../utils/apiEndPoints";
-
 const Register = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const loading = useSelector((state) => state.auth.loading);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+
   // Submit function
   const submitData = async (data) => {
-    console.log(data);
-    // try {
-    //   dispatch(setLoading(true));
-    //   const response = await fetch(`https://localhost:3000/register`, {
-    //     method: "POST",
-    //     body: JSON.stringify(data),
-    //     credentials: "include",
-    //   });
-    //   if (response.ok) {
-    //     const responseData = await response.json();
-    //     navigate("/login");
-    //     toast.success(responseData.message);
-    //   } else {
-    //     const errorData = await response.json();
-    //     toast.error(
-    //       errorData.message || "An error occurred during registration"
-    //     );
-    //   }
-    // } catch (error) {
-    //   console.log("Error while registering user", error);
-    //   toast.error("An error occurred. Please try again.");
-    // } finally {
-    //   dispatch(setLoading(false));
-    // }
+    await registerUser({ body: data })
+      .unwrap()
+      .then((response) => {
+        console.log(response, "positivie");
+        toast.success(response.message);
+        navigate("/login");
+      })
+      .catch((error) => {
+        toast.error(error.data.message);
+      });
   };
 
   return (
-    <main className=" w-full gradient p-[40px] h-screen">
+    <main className=" w-full gradient sm:p-[20px] p-[20px]">
       {/* Logo */}
       <img src="/image/logo.svg" className="block mx-auto" alt="" />
 
@@ -164,7 +146,7 @@ const Register = () => {
         </div>
 
         {/* Username and password input */}
-        <div className="flex gap-5 mt-6">
+        <div className="flex gap-5 mt-4">
           <div className="basis-1/2 ">
             <p className="mb-1.5 text-sm font-medium text-[#141B27]">
               Username
@@ -211,22 +193,47 @@ const Register = () => {
           </div>
         </div>
 
+        {/* Submit button */}
         <div className="mt-6">
           <button className="w-full primary-btn">
             {" "}
-            {loading ? (
+            {isLoading ? (
               <span className="loading loading-dots loading-md"></span>
             ) : (
               "Register"
             )}
           </button>
-          <p className="mt-2 text-sm text-center">
-            Already have a account?{" "}
-            <Link to="/login" className="text-primary">
-              Sign In
-            </Link>
-          </p>
         </div>
+
+        {/* Another option for login */}
+        <div className="mt-4">
+          <div className="relative">
+            <div className="absolute top-1/2 left-0 w-[30%] sm:w-[35%] h-[1px] bg-[#f0e8e8]" />
+            <div className="absolute top-1/2 right-0 w-[30%] sm:w-[35%] h-[1px] bg-[#f0e8e8]" />
+            <p className="text-sm text-center text-content">Or Sign in with</p>
+          </div>
+          <div className="flex gap-2 mt-4">
+            <button
+              type="button"
+              className="w-full basis-1/2 h-[40px] border border-[#f0e8e8] flex items-center justify-center gap-1.5 rounded-md text-content text-sm transitions hover:bg-[#e2dbdb]"
+            >
+              <img src="/image/auth/google-icon.svg" alt="" /> Google
+            </button>
+            <button
+              type="button"
+              className="w-full basis-1/2 h-[40px] border border-[#f0e8e8] flex items-center justify-center gap-1.5 rounded-md text-content text-sm transitions hover:bg-[#e2dbdb]"
+            >
+              <img src="/image/auth/facbook-icon.svg" alt="" /> Facebook
+            </button>
+          </div>
+        </div>
+
+        <p className="mt-3 text-sm text-center">
+          Already have a account?{" "}
+          <Link to="/login" className="text-primary">
+            Sign In
+          </Link>
+        </p>
       </form>
       {/* Image section */}
     </main>

@@ -11,7 +11,7 @@ const NotFound = () => {
       {/* Main section */}
       <section className="text-center">
         <img src="/image/notfound-img.png" alt="" />
-        <h2 className=" mb-3 md:text-[40px] text-[30px] text-white font-semibold font-poppin">
+        <h2 className=" mb-3 md:text-[40px] text-[30px] text-black font-semibold ">
           Page Not Found?
         </h2>
         <p className="mb-1 text-sm text-slate font-jakarta ">
