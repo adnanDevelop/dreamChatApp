@@ -14,11 +14,7 @@ const Layout = () => {
 
   return (
     <div className="relative lg:flex">
-      <div
-        className={`flex-none transitions ${
-          isToolbarActive ? "lg:w-[290px]" : " lg:w-[290px]"
-        }`}
-      >
+      <div className={`flex-none transitions `}>
         <Sidebar
           isToolbarActive={isToolbarActive}
           setToolbarActive={setToolbarActive}

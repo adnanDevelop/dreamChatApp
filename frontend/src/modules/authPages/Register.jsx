@@ -50,6 +50,7 @@ const Register = () => {
 
         {/* Form Input */}
         <div className="flex gap-5 mt-6">
+          {/* Fullname input */}
           <div className="basis-1/2 ">
             <p className="mb-1.5 text-sm font-medium text-[#141B27]">
               Full Name

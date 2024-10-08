@@ -1,4 +1,5 @@
 import authSlice from "./slices/authSlice";
+import tabSlice from "./slices/tabSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
@@ -8,6 +9,7 @@ import authApi from "./features/authApi";
 const store = configureStore({
   reducer: {
     auth: authSlice,
+    tab: tabSlice,
     // Apis
     [authApi.reducerPath]: authApi.reducer,
   },

@@ -7,6 +7,7 @@ export default {
       colors: {
         primary: "#734cf7",
         content: "#72767D",
+        light: "#D8DFED",
       },
       boxShadow: {
         "custom-light": "0px 0.5px 10px rgba(0, 0, 0, 0.08)",
