@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux";
 import Invite from "../Invite/Invite";
+import ContactChat from "../contactChat.jsx/ContactChat";
+import GroupChat from "../groupChat/GroupChat";
 
 const Dashboard = () => {
   const { activeTab } = useSelector((state) => state.tab);
@@ -13,7 +15,10 @@ const Dashboard = () => {
           case "Call":
           case "Setting":
             return <Invite />;
-
+          case "Chat":
+            return <ContactChat />;
+          case "Groups":
+            return <GroupChat />;
           default:
             null;
             break;

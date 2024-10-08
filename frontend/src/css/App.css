@@ -1,8 +1,39 @@
 * {
-  scrollbar-width: none !important;
-
+  scrollbar-width: 10px !important;
 }
 
 .gradient {
   background: linear-gradient(134.21deg, #fff 2.18%, #efebff 74.65%)
+}
+
+/* ::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #341D6A;
+  border-radius: 50px;
+} */
+
+body {
+  scrollbar-width: none !important;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 0.7rem !important;
+  border-radius: 50% !important;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  border: 0.2rem solid white !important;
+  border-radius: 1rem !important;
+  background: #341D6A !important;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background-color: white !important;
 }
