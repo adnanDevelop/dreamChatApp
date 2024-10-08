@@ -100,6 +100,14 @@ const Setting = () => {
                   <FaUser className="text-sm text-[#bab2b2]" />
                 </div>
               </div>
+              {/* About input */}
+              <div className="w-full h-[80px] border border-[#a49c9c23] px-1.5 rounded-md mb-2.5">
+                <input
+                  type="text"
+                  className="w-full text-xs bg-transparent border-none text-content placeholder:text-content focus:outline-none placeholder:text-xs"
+                  defaultValue={user?.aboutProfile}
+                />
+              </div>
 
               {/* Save button */}
               <div className="mt-4">

@@ -103,6 +103,26 @@ export const login = async (req, res) => {
   }
 };
 
+// Update user
+export const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { fullName, userName, email, gender, aboutProfile } = req.body;
+
+    const updateUser = await User.updateOne(
+      { _id: userId },
+      { fullName, userName, email, gender, aboutProfile }
+    );
+    if (updateUser.modifiedCount !== 1) {
+      return errorHandler(res, 400, "User not updated");
+    } else {
+      return responseHandler(res, 200, "User updated successfully");
+    }
+  } catch (error) {
+    return errorHandler(res, 400, error.message);
+  }
+};
+
 // Delete User Controller
 export const deleteUser = async (req, res) => {
   try {
