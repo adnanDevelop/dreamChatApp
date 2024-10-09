@@ -8,6 +8,7 @@ import {
   requestPasswordReset,
   resetPassword,
   updateUser,
+  verifyEmail,
 } from "../controller/userController.js";
 import isAuthenticated from "../middleware/isAuthenticated.js";
 const router = express.Router();
@@ -20,5 +21,6 @@ router.route("/delete-user/:id").delete(deleteUser);
 router.route("/user").get(isAuthenticated, getAllUsers);
 router.route("/request-password-reset").post(requestPasswordReset);
 router.route("/reset-password").post(resetPassword);
+router.route("/verify-email").post(verifyEmail);
 
 export default router;

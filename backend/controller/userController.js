@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 import { User } from "../model/userModel.js";
 import { Invitation } from "../model/invitationModel.js";
 import { errorHandler, responseHandler } from "../utils/handler.js";
@@ -34,7 +36,6 @@ export const register = async (req, res) => {
         token: inviteToken,
         status: "pending",
       });
-      console.log(invitation, "invitation");
       if (!invitation) {
         return errorHandler(res, 400, "Invalid or expired invitation token.");
       }
@@ -42,7 +43,6 @@ export const register = async (req, res) => {
       await invitation.save();
 
       sender = await User.findById(invitation.senderId);
-      console.log(sender, "sender");
     }
 
     const existingUser = await User.findOne({ email });
@@ -56,6 +56,10 @@ export const register = async (req, res) => {
     const malePicture = `https://avatar.iran.liara.run/public/boy?username=${userName}`;
     const femalePicture = `https://avatar.iran.liara.run/public/girl?username=${userName}`;
 
+    // Generating unique token
+    const verficationCode = crypto.randomBytes(4).toString("hex");
+    const verificationExpiration = Date.now() + 3600000;
+
     const data = await User.create({
       fullName,
       userName,
@@ -64,7 +68,29 @@ export const register = async (req, res) => {
       gender,
       phoneNumber,
       profilePhoto: gender === "male" ? malePicture : femalePicture,
+      verficationCode,
+      verificationExpiration,
     });
+
+    // Send verification email
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const verifyUrl = `http://yourfrontend.com/verify-email/${verficationCode}`;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Verify your email address",
+      html: `<p>Please click the link below to verify your email address:</p>
+             <a href="${verifyUrl}">Verify Email</a>`,
+    };
+
+    await transporter.sendMail(mailOptions);
 
     if (sender) {
       sender.friends.push(data._id);
@@ -74,7 +100,22 @@ export const register = async (req, res) => {
       await data.save();
     }
 
-    return responseHandler(res, 200, data, "User created successfully");
+    const userData = {
+      _id: data._id,
+      email: data.email,
+      fullName: data.fullName,
+      userName: data.userName,
+      phoneNumber: data.phoneNumber,
+      profilePhoto: data.profilePhoto,
+      gender: data.gender,
+    };
+
+    return responseHandler(
+      res,
+      200,
+      userData,
+      "User created successfully. A verification email has been sent."
+    );
   } catch (error) {
     return errorHandler(res, 400, error.message);
   }
@@ -227,15 +268,16 @@ export const requestPasswordReset = async (req, res) => {
     });
 
     const resetUrl = `http://yourfrontend.com/reset-password/${token}`;
-    console.log(resetUrl, "resetUrl");
-
-    await transporter.sendMail({
+    console.log(resetUrl, "resetUrl", email);
+    const maleOptions = {
+      from: process.env.EMAIL_USER,
       to: email,
       subject: "Password Reset",
       html: `<p>To reset your password, click the link below:</p>
              <a href="${resetUrl}">Reset Password</a>`,
-    });
+    };
 
+    await transporter.sendMail(maleOptions);
     return responseHandler(res, 200, "Password reset link sent to your email");
   } catch (error) {
     return errorHandler(res, 400, error.message);
@@ -263,6 +305,33 @@ export const resetPassword = async (req, res) => {
     await user.save();
 
     return responseHandler(res, 200, "Password reset successfully");
+  } catch (error) {
+    return errorHandler(res, 400, error.message);
+  }
+};
+
+// Email Verification Controller
+export const verifyEmail = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const user = await User.findOne({
+      verficationCode: code,
+      verificationExpiration: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Invalid or expired verification token." });
+    }
+
+    user.verficationCode = null;
+    user.verificationExpiration = null;
+    user.isVerified = true;
+    await user.save();
+
+    return responseHandler(res, 200, "Email verified successfully.");
   } catch (error) {
     return errorHandler(res, 400, error.message);
   }
