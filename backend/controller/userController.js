@@ -1,13 +1,22 @@
-import { User } from "../model/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { User } from "../model/userModel.js";
+import { Invitation } from "../model/invitationModel.js";
 import { errorHandler, responseHandler } from "../utils/handler.js";
 
 // Register Controller
 export const register = async (req, res) => {
   try {
-    const { fullName, userName, email, password, gender, phoneNumber } =
-      req.body;
+    const {
+      fullName,
+      userName,
+      email,
+      password,
+      gender,
+      phoneNumber,
+      inviteToken,
+    } = req.body;
+
     if (
       !fullName ||
       !userName ||
@@ -17,6 +26,24 @@ export const register = async (req, res) => {
       !phoneNumber
     ) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+    let sender = null;
+    if (inviteToken) {
+      // Find the invitation with the token
+      const invitation = await Invitation.findOne({
+        token: inviteToken,
+        status: "pending",
+      });
+      console.log(invitation, "invitation");
+      if (!invitation) {
+        return errorHandler(res, 400, "Invalid or expired invitation token.");
+      }
+      invitation.status = "accepted";
+      await invitation.save();
+
+      sender = await User.findById(invitation.senderId);
+      console.log(sender, "sender");
     }
 
     const existingUser = await User.findOne({ email });
@@ -39,8 +66,16 @@ export const register = async (req, res) => {
       phoneNumber,
       profilePhoto: gender === "male" ? malePicture : femalePicture,
     });
+
+    if (sender) {
+      sender.friends.push(data._id);
+      await sender.save();
+
+      data.friends.push(sender._id);
+      await data.save();
+    }
+
     return responseHandler(res, 200, data, "User created successfully");
-    // res.status(201).json({ message: "User created successfully", data });
   } catch (error) {
     return errorHandler(res, 400, error.message);
   }
@@ -155,7 +190,6 @@ export const logout = async (req, res) => {
 export const getAllUsers = async (req, res) => {
   try {
     const userId = req.id;
-    console.log(userId, "loggedIn user");
 
     const users = await User.find({ _id: { $ne: userId } }).select("-password");
     return responseHandler(res, 200, users, "Data retreived successfully");

@@ -26,7 +26,6 @@ const userSchema = new mongoose.Schema(
     },
     aboutProfile: {
       type: String,
-      required: true,
     },
     profilePhoto: {
       type: String,
@@ -37,6 +36,12 @@ const userSchema = new mongoose.Schema(
       enum: ["male", "female"],
       default: "male",
     },
+    friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -1,6 +1,6 @@
-import cors from "cors";
 import express from "express";
 const app = express();
+import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 import connectDb from "./db/db.js";
@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 // Routes Files
 import userRoute from "./routes/userRoute.js";
 import messageRoute from "./routes/messageRoute.js";
+import inviteRoute from "./routes/InviteRoute.js";
 
 // Configure CORS
 const corsOptions = {
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/api/auth", userRoute);
 app.use("/api/message", messageRoute);
+app.use("/api/invite", inviteRoute);
 
 // Server running
 const PORT = process.env.PORT || 3000;
