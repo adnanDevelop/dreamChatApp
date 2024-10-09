@@ -30,7 +30,6 @@ export const register = async (req, res) => {
 
     let sender = null;
     if (inviteToken) {
-      // Find the invitation with the token
       const invitation = await Invitation.findOne({
         token: inviteToken,
         status: "pending",

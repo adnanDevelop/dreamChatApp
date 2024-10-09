@@ -19,8 +19,8 @@ export const sendInvite = async (req, res) => {
     // Generating unique token
     const token = crypto.randomBytes(32).toString("hex");
 
-    // Create invitation entry in the database
-    const invitation = await Invitation.create({
+    // Create invitation in database
+    await Invitation.create({
       senderId,
       email,
       message,
