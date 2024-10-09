@@ -1,4 +1,5 @@
 import { Message } from "../model/messageModel.js";
+import { User } from "../model/userModel.js";
 import { Conversation } from "../model/conversationModel.js";
 import { errorHandler, responseHandler } from "../utils/handler.js";
 
@@ -8,6 +9,20 @@ export const sendMessage = async (req, res) => {
     const senderId = req.id;
     const receiverId = req.params.id;
     const { message } = req.body;
+
+    // // Check if the receiver is a friend of the sender
+    // const sender = await User.findById(senderId).populate("friends");
+    // const isFriend = sender.friends.some(
+    //   (friend) => friend._id.toString() === receiverId
+    // );
+
+    // if (!isFriend) {
+    //   return errorHandler(
+    //     res,
+    //     403,
+    //     "You can only send messages to your friends."
+    //   );
+    // }
 
     // Check if conversation already exists
     let gotConversation = await Conversation.findOne({
@@ -26,6 +41,7 @@ export const sendMessage = async (req, res) => {
       senderId,
       receiverId,
       message,
+      conversationId: gotConversation._id,
     });
 
     // Update conversation with new message
@@ -34,7 +50,7 @@ export const sendMessage = async (req, res) => {
       await gotConversation.save();
     }
 
-    return responseHandler(res, 200, "Message sent successfully");
+    return responseHandler(res, 200, newMessage, "Message sent successfully");
   } catch (error) {
     return errorHandler(res, 400, error.message);
   }

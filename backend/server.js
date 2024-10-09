@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import userRoute from "./routes/userRoute.js";
 import messageRoute from "./routes/messageRoute.js";
 import inviteRoute from "./routes/InviteRoute.js";
+import groupRoute from "./routes/groupRoute.js";
 
 // Configure CORS
 const corsOptions = {
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", userRoute);
 app.use("/api/message", messageRoute);
 app.use("/api/invite", inviteRoute);
+app.use("/api/group", groupRoute);
 
 // Server running
 const PORT = process.env.PORT || 3000;
