@@ -5,6 +5,8 @@ import {
   login,
   logout,
   register,
+  requestPasswordReset,
+  resetPassword,
   updateUser,
 } from "../controller/userController.js";
 import isAuthenticated from "../middleware/isAuthenticated.js";
@@ -16,5 +18,7 @@ router.route("/logout").get(logout);
 router.route("/update-user/:id").put(updateUser);
 router.route("/delete-user/:id").delete(deleteUser);
 router.route("/user").get(isAuthenticated, getAllUsers);
+router.route("/request-password-reset").post(requestPasswordReset);
+router.route("/reset-password").post(resetPassword);
 
 export default router;

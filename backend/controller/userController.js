@@ -198,3 +198,73 @@ export const getAllUsers = async (req, res) => {
     // res.status(400).json({ message: error.message });
   }
 };
+
+// Password reset request controller
+export const requestPasswordReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return errorHandler(res, 404, "User not found");
+    }
+
+    // Token generate karna
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
+    user.resetToken = token;
+    user.resetTokenExpiration = Date.now() + 3600000; // 1 hour
+    await user.save();
+
+    // Sending Email
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const resetUrl = `http://yourfrontend.com/reset-password/${token}`;
+    console.log(resetUrl, "resetUrl");
+
+    await transporter.sendMail({
+      to: email,
+      subject: "Password Reset",
+      html: `<p>To reset your password, click the link below:</p>
+             <a href="${resetUrl}">Reset Password</a>`,
+    });
+
+    return responseHandler(res, 200, "Password reset link sent to your email");
+  } catch (error) {
+    return errorHandler(res, 400, error.message);
+  }
+};
+
+// Password reset response controller
+export const resetPassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpiration: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token." });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.resetToken = null;
+    user.resetTokenExpiration = null;
+    await user.save();
+
+    return responseHandler(res, 200, "Password reset successfully");
+  } catch (error) {
+    return errorHandler(res, 400, error.message);
+  }
+};
