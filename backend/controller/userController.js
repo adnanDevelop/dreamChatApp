@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import crypto from "crypto";
+import { generateVerificationCode } from "../utils/verificationCode.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import { User } from "../model/userModel.js";
@@ -57,7 +57,7 @@ export const register = async (req, res) => {
     const femalePicture = `https://avatar.iran.liara.run/public/girl?username=${userName}`;
 
     // Generating unique token
-    const verficationCode = crypto.randomBytes(4).toString("hex");
+    const verificationCode = generateVerificationCode(6);
     const verificationExpiration = Date.now() + 3600000;
 
     const data = await User.create({
@@ -68,7 +68,7 @@ export const register = async (req, res) => {
       gender,
       phoneNumber,
       profilePhoto: gender === "male" ? malePicture : femalePicture,
-      verficationCode,
+      verificationCode,
       verificationExpiration,
     });
 
@@ -81,7 +81,7 @@ export const register = async (req, res) => {
       },
     });
 
-    const verifyUrl = `http://yourfrontend.com/verify-email/${verficationCode}`;
+    const verifyUrl = `http://yourfrontend.com/verify-email/${verificationCode}`;
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
@@ -108,6 +108,7 @@ export const register = async (req, res) => {
       phoneNumber: data.phoneNumber,
       profilePhoto: data.profilePhoto,
       gender: data.gender,
+      isVerified: data.isVerified,
     };
 
     return responseHandler(
@@ -313,10 +314,11 @@ export const resetPassword = async (req, res) => {
 // Email Verification Controller
 export const verifyEmail = async (req, res) => {
   try {
-    const { code } = req.params;
+    const { code } = req.body;
+    console.log(code);
 
     const user = await User.findOne({
-      verficationCode: code,
+      verificationCode: code,
       verificationExpiration: { $gt: Date.now() },
     });
 
@@ -326,7 +328,7 @@ export const verifyEmail = async (req, res) => {
         .json({ message: "Invalid or expired verification token." });
     }
 
-    user.verficationCode = null;
+    user.verificationCode = code;
     user.verificationExpiration = null;
     user.isVerified = true;
     await user.save();
