@@ -63,7 +63,7 @@ export const updateGroup = async (req, res) => {
 // Delete Group Controller
 export const deleteGroup = async (req, res) => {
   try {
-    const { groupId } = req.params;
+    const groupId = req.params.id;
     const deleteGroup = await Group.deleteOne({ _id: groupId });
 
     if (deleteGroup.deletedCount !== 1) {
@@ -80,7 +80,9 @@ export const deleteGroup = async (req, res) => {
 export const getAllGroups = async (req, res) => {
   try {
     const userId = req.id;
-    const groups = await Group.find({ groupAdmin: userId }).populate({
+    const groups = await Group.find({
+      $or: [{ groupAdmin: userId }, { groupMembers: userId }],
+    }).populate({
       path: "groupMembers",
       select: "fullName userName email profilePhoto",
     });
@@ -95,7 +97,8 @@ export const getAllGroups = async (req, res) => {
 export const sendGroupMessage = async (req, res) => {
   try {
     const senderId = req.id;
-    const { groupId, message } = req.body;
+    const groupId = req.params.id;
+    const { message } = req.body;
 
     // Create a new message for the group
     const newMessage = await Message.create({
@@ -118,14 +121,22 @@ export const sendGroupMessage = async (req, res) => {
 // Get messages for a specific group
 export const getGroupMessages = async (req, res) => {
   try {
-    const { groupId } = req.params; // Get groupId from URL parameters
+    const groupId = req.params.id;
 
-    const messages = await Message.find({ groupId }).populate("senderId");
+    const getMessage = await Group.find({ _id: groupId }).populate([
+      {
+        path: "messages",
+        populate: {
+          path: "senderId",
+          select: "fullName userName email profilePhoto",
+        },
+      },
+    ]);
 
     return responseHandler(
       res,
       200,
-      messages,
+      getMessage,
       "Group messages retrieved successfully"
     );
   } catch (error) {
