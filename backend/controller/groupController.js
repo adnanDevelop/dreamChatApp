@@ -80,9 +80,10 @@ export const deleteGroup = async (req, res) => {
 export const getAllGroups = async (req, res) => {
   try {
     const userId = req.id;
-    const groups = await Group.find({ groupAdmin: userId }).populate(
-      "groupMembers"
-    );
+    const groups = await Group.find({ groupAdmin: userId }).populate({
+      path: "groupMembers",
+      select: "fullName userName email profilePhoto",
+    });
 
     return responseHandler(res, 200, groups, "Groups retrieved successfully");
   } catch (error) {
