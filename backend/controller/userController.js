@@ -311,6 +311,29 @@ export const resetPassword = async (req, res) => {
   }
 };
 
+// Update password controller
+export const updatePassword = async (req, res) => {
+  try {
+    const { newPassword } = req.body;
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    const comparePassword = await bcrypt.compare(newPassword, user.password);
+
+    if (!comparePassword) {
+      return errorHandler(res, 400, "Password does not match");
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return responseHandler(res, 200, "Password updated successfully");
+  } catch (error) {
+    return errorHandler(res, 400, error.message);
+  }
+};
+
 // Email Verification Controller
 export const verifyEmail = async (req, res) => {
   try {
