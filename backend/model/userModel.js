@@ -18,7 +18,6 @@ const userSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      required: true,
     },
     password: {
       type: String,
@@ -37,6 +36,12 @@ const userSchema = new mongoose.Schema(
       default: "male",
     },
     friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    favouriteContacts: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

@@ -1,5 +1,4 @@
 import { Message } from "../model/messageModel.js";
-import { User } from "../model/userModel.js";
 import { Conversation } from "../model/conversationModel.js";
 import { errorHandler, responseHandler } from "../utils/handler.js";
 

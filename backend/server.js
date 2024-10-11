@@ -11,6 +11,7 @@ import userRoute from "./routes/userRoute.js";
 import messageRoute from "./routes/messageRoute.js";
 import inviteRoute from "./routes/InviteRoute.js";
 import groupRoute from "./routes/groupRoute.js";
+import favouriteContactRoute from "./routes/favouriteContactRoute.js";
 
 // Configure CORS
 const corsOptions = {
@@ -29,6 +30,7 @@ app.use("/api/auth", userRoute);
 app.use("/api/message", messageRoute);
 app.use("/api/invite", inviteRoute);
 app.use("/api/group", groupRoute);
+app.use("/api/contact", favouriteContactRoute);
 
 // Server running
 const PORT = process.env.PORT || 3000;

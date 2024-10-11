@@ -51,3 +51,5 @@ export const sendInvite = async (req, res) => {
     res.status(500).json({ message: "Error sending invite." });
   }
 };
+
+

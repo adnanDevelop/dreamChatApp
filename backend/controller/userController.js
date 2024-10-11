@@ -158,6 +158,7 @@ export const login = async (req, res) => {
       email: isUserExist.email,
       profilePhoto: isUserExist.profilePhoto,
       gender: isUserExist.gender,
+      favouriteContacts: isUserExist.favouriteContacts,
     };
 
     // login user
