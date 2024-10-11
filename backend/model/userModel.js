@@ -41,12 +41,6 @@ const userSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    favouriteContacts: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
     resetToken: { type: String, default: null },
     resetTokenExpiration: { type: Date, default: null },
     isVerified: { type: Boolean, default: false },
