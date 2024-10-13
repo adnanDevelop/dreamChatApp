@@ -1,10 +1,36 @@
-import { FaPaperPlane } from "react-icons/fa6";
+import { FaArrowRight, FaTrash } from "react-icons/fa6";
+import { IoExitOutline } from "react-icons/io5";
+import TermAndCondition from "./component/TermAndCondition";
 import UpdatePassword from "./component/UpdatePassword";
 import UpdateProfile from "./component/UpdateProfile";
-import { useSelector } from "react-redux";
+
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../redux/slices/authSlice";
+import { useLogoutUserMutation } from "../../redux/features/authApi";
+import DeleteAccountModal from "./component/DeleteAccountModal";
 
 const Setting = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+
+  const [logoutUser] = useLogoutUserMutation();
+
+  const onSubmit = () => {
+    logoutUser()
+      .unwrap()
+      .then((response) => {
+        toast.success(response?.message);
+        navigate("/login");
+        dispatch(logout());
+      })
+      .catch((error) => {
+        toast.error(error.data.message);
+      });
+  };
 
   return (
     <main className="select-none">
@@ -25,36 +51,49 @@ const Setting = () => {
       </section>
 
       {/* Profile setting */}
-      <section className="mt-[20px] p-3 rounded-md bg-black">
-        <h4 className="text-lg font-semibold text-light font-poppin">
-          Profile Setting
-        </h4>
-
+      <h4 className="mt-[20px] p-3 text-lg font-semibold  text-light font-poppin">
+        Profile Setting
+      </h4>
+      <section className="p-3 bg-black rounded-md ">
         {/* Update profile */}
         <UpdateProfile />
         {/* Update password */}
         <UpdatePassword />
+      </section>
 
-        <div className="collapse rounded-md collapse-plus bg-[#181818]">
-          <input type="radio" className="min-h-0" name="my-accordion-3" />
-          <div className="flex items-center min-h-0 gap-2 text-light collapse-title">
-            <FaPaperPlane className="text-sm" /> Terms & Conditions
-          </div>
-          <div className="collapse-content">
-            {/* About input */}
-            <div className="w-full h-[80px] border border-[#a49c9c23] px-1.5 rounded-md mb-2.5">
-              <input
-                type="text"
-                className="w-full text-xs bg-transparent border-none text-content placeholder:text-content focus:outline-none placeholder:text-xs"
-                defaultValue={user?.aboutProfile}
-              />
-            </div>
-            <div className="mt-4">
-              <button className="w-full primary-btn h-[35px]">Save</button>
-            </div>
-          </div>
+      {/* Logout and Delete Account Setting */}
+      <h4 className="mt-[20px] p-3 text-lg font-semibold  text-light font-poppin">
+        Other
+      </h4>
+      <section className="p-3 bg-black rounded-md ">
+        {/* Term And Conditions */}
+        <TermAndCondition />
+
+        <div className="flex items-center justify-between p-3 border-b border-b-[#6f5c5c39] transitions group  cursor-pointer">
+          <button
+            className="flex items-center gap-2 text-base text-light group-hover:text-primary transitions "
+            onClick={() => {
+              const modal = document.getElementById(user?._id);
+              if (modal) modal.showModal();
+            }}
+          >
+            <FaTrash className="text-sm" /> Delete Account
+          </button>
+          <FaArrowRight className="text-sm text-light group-hover:text-primary transitions" />
+        </div>
+        <div
+          className="flex items-center justify-between p-3 border-b border-b-[#6f5c5c39] transitions group  cursor-pointer"
+          onClick={onSubmit}
+        >
+          <button className="flex items-center gap-2 text-base text-light group-hover:text-primary transitions ">
+            <IoExitOutline className="text-sm" />
+            Logout
+          </button>
+          <FaArrowRight className="text-sm text-light group-hover:text-primary transitions" />
         </div>
       </section>
+
+      <DeleteAccountModal id={user?._id} />
     </main>
   );
 };

@@ -36,18 +36,17 @@ const authApi = createApi({
     }),
 
     // Logout User
-    logoutUser: builder.query({
-      query: () => ({
-        url: `/logout`,
-        method: "Get",
-        // body: payload.body,
+    logoutUser: builder.mutation({
+      query: (payload) => ({
+        url: `/logout/${payload.id}`,
+        method: "DELETE",
       }),
     }),
 
     // Delete User
     deleteUser: builder.mutation({
       query: (payload) => ({
-        url: `/delete/${payload.id}`,
+        url: `/delete-user/${payload.id}`,
         method: "DELETE",
       }),
     }),
@@ -64,7 +63,7 @@ const authApi = createApi({
 
 export const {
   useGetUserQuery,
-  useLogoutUserQuery,
+  useLogoutUserMutation,
   useLoginUserMutation,
   useDeleteUserMutation,
   useUpdateUserMutation,

@@ -24,12 +24,10 @@ const Login = () => {
 
   // Submit function
   const submitData = async (data) => {
-    console.log(data);
     await loginUser({ body: data })
       .unwrap()
       .then((response) => {
         dispatch(login(response.data));
-        console.log(response, "positivie");
         toast.success(response.message);
         navigate("/login");
       })

@@ -14,6 +14,7 @@ const ToastProvider = () => {
       draggable
       pauseOnHover
       // theme="dark"
+      // toastStyle={{ backgroundColor: "#734cf7", color: "#fff" }}
     />
   );
 };
