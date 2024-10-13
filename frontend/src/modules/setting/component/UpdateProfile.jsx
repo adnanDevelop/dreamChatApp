@@ -1,14 +1,34 @@
 import { FaUser } from "react-icons/fa6";
 import { MdOutlineMail } from "react-icons/md";
+
+// Redxu
 import { useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { useUpdateUserMutation } from "../../../redux/features/authApi";
+import { toast } from "react-toastify";
 
 const UpdateProfile = () => {
+  const { register, handleSubmit } = useForm();
   const { user } = useSelector((state) => state.auth);
-
   const isLoading = false;
+
+  const [updateProfile] = useUpdateUserMutation();
+
+  const onSubmit = (data) => {
+    updateProfile({ id: user?._id, body: data })
+      .unwrap()
+      .then((response) => {
+        toast.success(response?.message);
+      })
+      .catch((response) => {
+        toast.error(response?.error);
+      });
+  };
+
   return (
     <div className="collapse rounded-md collapse-plus bg-[#181818] my-2">
       <input type="radio" className="min-h-0" name="my-accordion-3" />
+
       <div className="flex items-center min-h-0 gap-2 text-light collapse-title">
         <FaUser className="text-sm" /> Profile Setting
       </div>
@@ -21,13 +41,16 @@ const UpdateProfile = () => {
           />
         </div>
 
-        <form className="mt-[20px]">
+        <form className="mt-[20px]" onSubmit={handleSubmit(onSubmit)}>
           {/* Fullname input */}
           <div className="w-full h-[35px] flex border border-[#a49c9c23] px-1.5 rounded-md mb-2.5">
             <input
               type="text"
               className="w-full text-xs bg-transparent border-none text-content placeholder:text-content focus:outline-none placeholder:text-xs"
               defaultValue={`${user?.fullName} `}
+              {...register("fullName", {
+                required: "Name is required",
+              })}
             />
             <div className="w-[30px] h-full  flex items-center justify-center">
               <FaUser className="text-sm text-[#bab2b2]" />
@@ -41,6 +64,7 @@ const UpdateProfile = () => {
               className="w-full text-xs bg-transparent border-none text-content placeholder:text-content focus:outline-none placeholder:text-xs"
               placeholder="Email"
               defaultValue={user?.email}
+              {...register("email")}
             />
             <div className="w-[30px] h-full  flex items-center justify-center">
               <MdOutlineMail className="text-base text-[#bab2b2]" />
@@ -51,9 +75,7 @@ const UpdateProfile = () => {
           <div className="mb-2.5">
             <select
               className="w-full h-[35px] text-xs flex border focus:outline-none bg-transparent border-[#a49c9c23] text-content px-1.5 rounded-md"
-              //   {...register("gender", {
-              //     required: "Please select Gender",
-              //   })}
+              {...register("gender")}
               defaultValue={user?.gender}
             >
               <option className="text-xs" value="male">
@@ -72,6 +94,7 @@ const UpdateProfile = () => {
               className="w-full text-xs bg-transparent border-none text-content placeholder:text-content focus:outline-none placeholder:text-xs"
               placeholder="Username"
               defaultValue={user?.userName}
+              {...register("userName")}
             />
             <div className="w-[30px] h-full  flex items-center justify-center">
               <FaUser className="text-sm text-[#bab2b2]" />
@@ -83,6 +106,7 @@ const UpdateProfile = () => {
               type="text"
               className="w-full text-xs bg-transparent border-none text-content placeholder:text-content focus:outline-none placeholder:text-xs"
               defaultValue={user?.aboutProfile}
+              {...register("aboutProfile")}
             />
           </div>
 

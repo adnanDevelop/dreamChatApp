@@ -24,7 +24,6 @@ const Register = () => {
     await registerUser({ body: data })
       .unwrap()
       .then((response) => {
-        console.log(response, "positivie");
         toast.success(response.message);
         navigate("/login");
       })

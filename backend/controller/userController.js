@@ -115,7 +115,8 @@ export const register = async (req, res) => {
       res,
       200,
       userData,
-      "User created successfully. A verification email has been sent."
+      // "User created successfully. A verification email has been sent."
+      "User created successfully."
     );
   } catch (error) {
     return errorHandler(res, 400, error.message);
@@ -186,15 +187,27 @@ export const updateUser = async (req, res) => {
     const userId = req.params.id;
     const { fullName, userName, email, gender, aboutProfile } = req.body;
 
-    const updateUser = await User.updateOne(
-      { _id: userId },
-      { fullName, userName, email, gender, aboutProfile }
-    );
-    if (updateUser.modifiedCount !== 1) {
-      return errorHandler(res, 400, "User not updated");
-    } else {
-      return responseHandler(res, 200, "User updated successfully");
-    }
+    const findUser = await User.findById({ _id: userId });
+
+    if (fullName) findUser.fullName = fullName;
+    if (userName) findUser.userName = userName;
+    if (email) findUser.email = email;
+    if (gender) findUser.gender = gender;
+    if (aboutProfile) findUser.aboutProfile = aboutProfile;
+
+    await findUser.save();
+
+    return responseHandler(res, 200, "User updated successfully");
+
+    // const updateUser = await User.updateOne(
+    //   { _id: userId },
+    //   { fullName, userName, email, gender, aboutProfile }
+    // );
+    // if (updateUser.modifiedCount !== 1) {
+    //   return errorHandler(res, 400, "User not updated");
+    // } else {
+    //   return responseHandler(res, 200, "User updated successfully");
+    // }
   } catch (error) {
     return errorHandler(res, 400, error.message);
   }
