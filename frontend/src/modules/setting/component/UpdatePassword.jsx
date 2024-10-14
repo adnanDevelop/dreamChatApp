@@ -1,5 +1,9 @@
+import { useForm } from "react-hook-form";
+
 import { FaKey, FaRegEye } from "react-icons/fa6";
 const UpdatePassword = () => {
+  const { register, handleSubmit } = useForm();
+
   const isLoading = false;
 
   return (
@@ -19,6 +23,9 @@ const UpdatePassword = () => {
               placeholder="Current Password"
               onFocus={(e) => (e.target.type = "text")}
               onBlur={(e) => (e.target.type = "password")}
+              {...register("currentPassword", {
+                required: "Current Password is required",
+              })}
             />
             <div className="w-[30px] h-full  flex items-center justify-center">
               <FaRegEye className="text-sm text-[#bab2b2]" />
@@ -33,6 +40,7 @@ const UpdatePassword = () => {
               placeholder="New Password"
               onFocus={(e) => (e.target.type = "text")}
               onBlur={(e) => (e.target.type = "password")}
+              {...register("newPassword")}
             />
             <div className="w-[30px] h-full  flex items-center justify-center">
               <FaRegEye className="text-sm text-[#bab2b2]" />
@@ -47,6 +55,13 @@ const UpdatePassword = () => {
               placeholder="Confirm Password"
               onFocus={(e) => (e.target.type = "text")}
               onBlur={(e) => (e.target.type = "password")}
+              {...register("confirmPassword", {
+                validate: (value) => {
+                  if (value !== register.newPassword) {
+                    return "Password didn't match";
+                  }
+                },
+              })}
             />
             <div className="w-[30px] h-full  flex items-center justify-center">
               <FaRegEye className="text-sm text-[#bab2b2]" />

@@ -30,6 +30,7 @@ const Setting = () => {
         dispatch(logout());
       })
       .catch((error) => {
+        console.log(error, "error");
         toast.error(error.data.message);
       });
   };
