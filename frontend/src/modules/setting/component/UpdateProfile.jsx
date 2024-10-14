@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 import { FaUser } from "react-icons/fa6";
 import { MdOutlineMail } from "react-icons/md";
 
@@ -5,19 +7,24 @@ import { MdOutlineMail } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useUpdateUserMutation } from "../../../redux/features/authApi";
-import { toast } from "react-toastify";
+import { setUser } from "../../../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const UpdateProfile = () => {
   const { register, handleSubmit } = useForm();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const isLoading = false;
 
   const [updateProfile] = useUpdateUserMutation();
 
+  // Update Profile function
   const onSubmit = (data) => {
     updateProfile({ id: user?._id, body: data })
       .unwrap()
       .then((response) => {
+        console.log(response, "response");
+        dispatch(setUser(response?.data));
         toast.success(response?.message);
       })
       .catch((response) => {
@@ -102,12 +109,11 @@ const UpdateProfile = () => {
           </div>
           {/* About input */}
           <div className="w-full h-[80px] border border-[#a49c9c23] px-1.5 rounded-md mb-2.5">
-            <input
-              type="text"
-              className="w-full text-xs bg-transparent border-none text-content placeholder:text-content focus:outline-none placeholder:text-xs"
+            <textarea
+              className="w-full h-full p-1 text-xs bg-transparent border-none resize-none text-content placeholder:text-content focus:outline-none placeholder:text-xs"
               defaultValue={user?.aboutProfile}
               {...register("aboutProfile")}
-            />
+            ></textarea>
           </div>
 
           {/* Save button */}

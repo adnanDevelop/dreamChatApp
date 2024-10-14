@@ -17,6 +17,8 @@ const Setting = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
+  console.log(user, "user");
+
   const [logoutUser] = useLogoutUserMutation();
 
   const onSubmit = () => {
@@ -45,9 +47,9 @@ const Setting = () => {
         </div>
 
         <h3 className="text-[20px] font-medium text-light mt-3">
-          Salom Katherine
+          {user?.fullName}
         </h3>
-        <p className="text-sm text-content">Software Developer</p>
+        <p className="text-sm text-content">{user?.aboutProfile}</p>
       </section>
 
       {/* Profile setting */}

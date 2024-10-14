@@ -197,17 +197,18 @@ export const updateUser = async (req, res) => {
 
     await findUser.save();
 
-    return responseHandler(res, 200, "User updated successfully");
+    const userData = {
+      _id: findUser._id,
+      fullName: findUser.fullName,
+      userName: findUser.userName,
+      email: findUser.email,
+      profilePhoto: findUser.profilePhoto,
+      gender: findUser.gender,
+      aboutProfile: findUser.aboutProfile,
+      friends: findUser.friends,
+    };
 
-    // const updateUser = await User.updateOne(
-    //   { _id: userId },
-    //   { fullName, userName, email, gender, aboutProfile }
-    // );
-    // if (updateUser.modifiedCount !== 1) {
-    //   return errorHandler(res, 400, "User not updated");
-    // } else {
-    //   return responseHandler(res, 200, "User updated successfully");
-    // }
+    return responseHandler(res, 200, userData, "User updated successfully");
   } catch (error) {
     return errorHandler(res, 400, error.message);
   }

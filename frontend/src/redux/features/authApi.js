@@ -26,7 +26,8 @@ const authApi = createApi({
         body: payload.body,
       }),
     }),
-    // Login User
+
+    // Update User Profile
     updateUser: builder.mutation({
       query: (payload) => ({
         url: `/update-user/${payload.id}`,
