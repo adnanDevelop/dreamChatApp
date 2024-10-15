@@ -68,11 +68,20 @@ const authApi = createApi({
         method: "Get",
       }),
     }),
+
+    // Get user by Id
+    getUserById: builder.query({
+      query: (payload) => ({
+        url: `/user/${payload.id}`,
+        method: "Get",
+      }),
+    }),
   }),
 });
 
 export const {
   useGetUserQuery,
+  useGetUserByIdQuery,
   useLogoutUserMutation,
   useLoginUserMutation,
   useDeleteUserMutation,

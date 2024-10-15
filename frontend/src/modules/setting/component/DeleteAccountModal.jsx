@@ -22,17 +22,17 @@ const DeleteAccountModal = ({ id }) => {
         toast.success("User deleted successfully");
       })
       .catch((error) => {
-        toast.error(error?.message);
+        toast.error(error.data.message);
       });
   };
 
   return (
     <Modal id={id}>
-      <div className="modal-box w-[400px] text-center bg-white">
-        <div className="w-[70px] h-[70px] mx-auto rounded-full grid place-items-center bg-primary">
+      <div className="modal-box w-[400px] text-center bg-[#181818]">
+        <div className="w-[70px] h-[70px] mx-auto rounded-full grid place-items-center bg-red-500">
           <GoAlertFill className="text-[30px] text-white" />
         </div>
-        <h3 className=" font-bold text-center text-[25px] text-black mt-4">
+        <h3 className=" font-bold text-center text-[25px] text-white mt-4">
           Delete Account
         </h3>
         <p className="mt-3 leading-5 text-content">
@@ -50,7 +50,7 @@ const DeleteAccountModal = ({ id }) => {
           </button>
           <button
             type="submit"
-            className="px-[30px] h-[40px] rounded-lg bg-primary text-white font-jakarta font-medium transitions hover:scale-105 text-sm"
+            className="px-[30px] h-[40px] rounded-lg bg-red-500 text-white font-jakarta font-medium transitions hover:scale-105 text-sm"
             onClick={deleteAccount}
           >
             Yes, Delete it!

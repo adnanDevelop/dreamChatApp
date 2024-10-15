@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useRegisterUserMutation } from "../../redux/features/authApi";
@@ -11,6 +11,7 @@ import { MdOutlineMail } from "react-icons/md";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const {
     register,
     handleSubmit,
@@ -18,14 +19,17 @@ const Register = () => {
   } = useForm();
 
   const [registerUser, { isLoading }] = useRegisterUserMutation();
+  const inviteToken = searchParams.get("inviteToken");
 
   // Submit function
   const submitData = async (data) => {
-    await registerUser({ body: data })
+    await registerUser({
+      body: { ...data, inviteToken: inviteToken && inviteToken },
+    })
       .unwrap()
       .then((response) => {
-        toast.success(response.message);
         navigate("/login");
+        toast.success(response.message);
       })
       .catch((error) => {
         toast.error(error.data.message);
@@ -195,7 +199,7 @@ const Register = () => {
 
         {/* Submit button */}
         <div className="mt-6">
-          <button className="w-full primary-btn">
+          <button className="w-full primary-btn" disabled={isLoading}>
             {" "}
             {isLoading ? (
               <span className="loading loading-dots loading-md"></span>

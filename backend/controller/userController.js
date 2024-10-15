@@ -255,6 +255,25 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+// Get User by id
+
+export const getUserById = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const findUser = await User.findById({ _id: userId }).populate([
+      { path: "friends", select: "fullName userName email profilePhoto" },
+    ]);
+
+    if (!findUser) {
+      return errorHandler(res, 404, "User not found");
+    } else {
+      return responseHandler(res, 200, findUser, "Data retreived successfully");
+    }
+  } catch (error) {
+    return errorHandler(res, 400, error.message);
+  }
+};
+
 // Password reset request controller
 export const requestPasswordReset = async (req, res) => {
   try {

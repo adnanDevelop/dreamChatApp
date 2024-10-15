@@ -99,7 +99,7 @@ const Login = () => {
 
         {/* Submit button */}
         <div className="mt-6">
-          <button className="w-full primary-btn">
+          <button className="w-full primary-btn" disabled={isLoading}>
             {" "}
             {isLoading ? (
               <span className="loading loading-dots loading-md"></span>

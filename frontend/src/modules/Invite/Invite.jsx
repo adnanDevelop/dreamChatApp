@@ -1,5 +1,6 @@
 import { FaPaperPlane } from "react-icons/fa6";
 import { useSelector } from "react-redux";
+import InviteFriendsModal from "../../components/global/InviteFriendsModal";
 
 const Invite = () => {
   const { user } = useSelector((state) => state.auth);
@@ -16,11 +17,18 @@ const Invite = () => {
         <p className="mt-2 text-content">
           Choose a person or group to start chat with them.
         </p>
-        <button className="primary-btn px-[20px] flex items-center gap-2 mt-4">
+        <button
+          className="primary-btn px-[20px] flex items-center gap-2 mt-4"
+          onClick={() => {
+            const modal = document.getElementById("sent-invite-modal");
+            if (modal) modal.showModal();
+          }}
+        >
           {" "}
           <FaPaperPlane /> Invite Friends
         </button>
       </div>
+      <InviteFriendsModal id={"sent-invite-modal"} />
     </section>
   );
 };

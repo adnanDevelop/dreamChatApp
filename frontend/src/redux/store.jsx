@@ -5,6 +5,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 
 // Apis
 import authApi from "./features/authApi";
+import inviteApi from "./features/inviteApi";
 
 const store = configureStore({
   reducer: {
@@ -12,11 +13,12 @@ const store = configureStore({
     tab: tabSlice,
     // Apis
     [authApi.reducerPath]: authApi.reducer,
+    [inviteApi.reducerPath]: inviteApi.reducer,
   },
 
   // Middlewares
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware),
+    getDefaultMiddleware().concat(authApi.middleware, inviteApi.middleware),
 });
 
 setupListeners(store.dispatch);

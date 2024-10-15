@@ -2,6 +2,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosSend } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
+import InviteFriendsModal from "./InviteFriendsModal";
 
 const ChatSearchBar = () => {
   return (
@@ -28,7 +29,13 @@ const ChatSearchBar = () => {
               className="menu dropdown-content bg-[#0d0d0d] border border-[#222224] rounded-md z-[1] mt-4 w-[150px] p-2.5 shadow"
             >
               <li className="bg-[#161616] flex items-center justify-center text-light rounded-md transitions hover:text-primary">
-                <a className="p-2">
+                <a
+                  className="p-2"
+                  onClick={() => {
+                    const modal = document.getElementById("sent-invite-modal");
+                    if (modal) modal.showModal();
+                  }}
+                >
                   <IoIosSend className="text-lg" /> Invite Others
                 </a>
               </li>
@@ -47,6 +54,8 @@ const ChatSearchBar = () => {
           <FaSearch />
         </button>
       </div>
+
+      <InviteFriendsModal id={"sent-invite-modal"} />
     </main>
   );
 };
