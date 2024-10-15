@@ -160,6 +160,7 @@ export const login = async (req, res) => {
       profilePhoto: isUserExist.profilePhoto,
       gender: isUserExist.gender,
       favouriteContacts: isUserExist.favouriteContacts,
+      friends: isUserExist.friends,
     };
 
     // login user

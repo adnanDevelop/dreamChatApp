@@ -1,5 +1,5 @@
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { chatContent } from "../../modules/content";
+// import { chatContent } from "../../modules/content";
 
 import { useSelector } from "react-redux";
 import { useGetUserByIdQuery } from "../../redux/features/authApi";
@@ -7,9 +7,7 @@ import { useGetUserByIdQuery } from "../../redux/features/authApi";
 const AllContact = () => {
   const { user } = useSelector((state) => state.auth);
 
-  const { data: userData } = useGetUserByIdQuery({ id: user?._id });
-
-  console.log(userData?.data?.friends, "user");
+  const { data: userData, isLoading } = useGetUserByIdQuery({ id: user?._id });
 
   return (
     <main>
@@ -53,33 +51,45 @@ const AllContact = () => {
 
       {/* Recent Chats */}
       <div className="select-none mt-[20px]">
-        {userData?.data?.friends.map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between w-full p-4 mb-3 bg-black border-2 border-transparent rounded-md transitions hover:border-primary"
-          >
-            {/* Avator section */}
-            <div className="flex items-center gap-3 text-light">
-              <div className={`avatar ${item?.active ? "online" : ""}`}>
-                <div className="w-[50px] rounded-full">
-                  <img src={item.profilePhoto} />
-                </div>
-              </div>
-              <h4 className="text-lg font-semibold">{item?.fullName}</h4>
-            </div>
-            <div>
-              <p className="text-xs text-white">{item?.date}</p>
-              {item?.messages && (
-                <div className="flex items-center justify-end mt-1.5">
-                  <p className="bg-red-500 border-none text-light badge">
-                    {Number(item?.messages) > 9 ? "9+" : item?.messages}
-                  </p>
-                  <BsThreeDotsVertical className="text-light" />
-                </div>
-              )}
-            </div>
+        {isLoading ? (
+          <div className="flex items-center justify-center w-full h-[40vh]">
+            <span className="loading loading-dots loading-lg text-primary "></span>
           </div>
-        ))}
+        ) : userData?.data?.friends?.length > 0 ? (
+          userData?.data?.friends.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between w-full p-4 mb-3 bg-black border-2 border-transparent rounded-md transitions hover:border-primary"
+            >
+              {/* Avator section */}
+              <div className="flex items-center gap-3 text-light">
+                <div className={`avatar ${item?.active ? "online" : ""}`}>
+                  <div className="w-[50px] rounded-full">
+                    <img src={item.profilePhoto} />
+                  </div>
+                </div>
+                <h4 className="text-lg font-medium font-poppin">{item?.fullName}</h4>
+              </div>
+              <div>
+                <p className="text-xs text-white">{item?.date}</p>
+                {item?.messages && (
+                  <div className="flex items-center justify-end mt-1.5">
+                    <p className="bg-red-500 border-none text-light badge">
+                      {Number(item?.messages) > 9 ? "9+" : item?.messages}
+                    </p>
+                    <BsThreeDotsVertical className="text-light" />
+                  </div>
+                )}
+              </div>
+            </div>
+          ))
+        ) : (
+          <div>
+            <p className="text-sm text-white font-poppin ">
+              You don&apos;t have any friends yet.
+            </p>
+          </div>
+        )}
       </div>
     </main>
   );

@@ -24,6 +24,9 @@ const InviteFriendsModal = ({ id }) => {
         reset();
         if (modal) modal.close();
         toast.success(response?.data);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       })
       .catch((error) => {
         toast.error(error.data.message);

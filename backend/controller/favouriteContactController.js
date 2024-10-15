@@ -65,7 +65,6 @@ export const removeFavourite = async (req, res) => {
 export const deleteAllFavourite = async (req, res) => {
   try {
     const userId = req.id;
-
     const deleteContacts = await FavouriteContact.deleteOne({ userId });
 
     if (deleteContacts.deletedCount === 0) {
@@ -81,7 +80,7 @@ export const deleteAllFavourite = async (req, res) => {
 // Get Favourite Contact controller
 export const getFavouriteContact = async (req, res) => {
   try {
-    const userId = req.id;
+    const userId = req.params.id;
 
     const findFavouties = await FavouriteContact.findOne({ userId }).populate([
       {
