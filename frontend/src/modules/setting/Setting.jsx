@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../redux/slices/authSlice";
+import { setTab } from "../../redux/slices/tabSlice";
 import { useLogoutUserMutation } from "../../redux/features/authApi";
 import DeleteAccountModal from "./component/DeleteAccountModal";
 
@@ -17,8 +18,6 @@ const Setting = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
-  console.log(user, "user");
-
   const [logoutUser] = useLogoutUserMutation();
 
   const onSubmit = () => {
@@ -26,6 +25,7 @@ const Setting = () => {
       .unwrap()
       .then((response) => {
         toast.success(response?.message);
+        dispatch(setTab("Invite"));
         navigate("/login");
         dispatch(logout());
       })

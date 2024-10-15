@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { activeTab: localStorage.getItem("activeTab") || "chat" };
+const initialState = { activeTab: localStorage.getItem("activeTab") || "Chat" };
 
 const tabSlice = createSlice({
   name: "auth",
@@ -10,8 +10,12 @@ const tabSlice = createSlice({
       state.activeTab = action.payload;
       localStorage.setItem("activeTab", action.payload);
     },
+    removeTab: (state) => {
+      state.activeTab = "chat";
+      localStorage.removeItem("activeTab");
+    },
   },
 });
 
-export const { setTab } = tabSlice.actions;
+export const { setTab, removeTab } = tabSlice.actions;
 export default tabSlice.reducer;

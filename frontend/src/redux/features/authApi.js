@@ -38,9 +38,9 @@ const authApi = createApi({
 
     // Logout User
     logoutUser: builder.mutation({
-      query: (payload) => ({
-        url: `/logout/${payload.id}`,
-        method: "DELETE",
+      query: () => ({
+        url: `/logout`,
+        method: "GET",
       }),
     }),
 
