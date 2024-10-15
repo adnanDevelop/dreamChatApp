@@ -329,12 +329,14 @@ export const resetPassword = async (req, res) => {
 // Update password controller
 export const updatePassword = async (req, res) => {
   try {
-    const { newPassword } = req.body;
-    console.log(newPassword);
+    const { currentPassword, newPassword } = req.body;
     const userId = req.id;
 
     const user = await User.findById(userId);
-    const comparePassword = await bcrypt.compare(newPassword, user.password);
+    const comparePassword = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
 
     if (!comparePassword) {
       return errorHandler(res, 400, "Password does not match");
@@ -354,7 +356,6 @@ export const updatePassword = async (req, res) => {
 export const verifyEmail = async (req, res) => {
   try {
     const { code } = req.body;
-    console.log(code);
 
     const user = await User.findOne({
       verificationCode: code,

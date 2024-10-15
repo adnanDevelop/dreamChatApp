@@ -8,16 +8,24 @@ const UpdatePassword = () => {
     register,
     handleSubmit,
     formState: { errors },
-    getValues, // Get the form values
+    getValues,
+    reset,
   } = useForm();
   const isLoading = false;
 
   const [UpdatePassword] = useUpdatePasswordMutation(); // Mutation function
 
   const onSubmit = (data) => {
-    UpdatePassword({ newPassword: data.newPassword })
+    const values = {
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    };
+    UpdatePassword({
+      body: values,
+    })
       .unwrap()
       .then((response) => {
+        reset();
         toast.success(response?.message);
       })
       .catch((error) => {
