@@ -330,6 +330,7 @@ export const resetPassword = async (req, res) => {
 export const updatePassword = async (req, res) => {
   try {
     const { newPassword } = req.body;
+    console.log(newPassword);
     const userId = req.id;
 
     const user = await User.findById(userId);

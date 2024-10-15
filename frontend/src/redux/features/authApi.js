@@ -52,6 +52,15 @@ const authApi = createApi({
       }),
     }),
 
+    // Update Password
+    updatePassword: builder.mutation({
+      query: (payload) => ({
+        url: `/update-password`,
+        method: "PUT",
+        body: payload.body,
+      }),
+    }),
+
     // Get all users
     getUser: builder.query({
       query: () => ({
@@ -69,6 +78,7 @@ export const {
   useDeleteUserMutation,
   useUpdateUserMutation,
   useRegisterUserMutation,
+  useUpdatePasswordMutation,
 } = authApi;
 
 export default authApi;
