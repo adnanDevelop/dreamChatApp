@@ -3,6 +3,10 @@ import ChatFooter from "../chatDashboard/component/ChatFooter";
 import ChatHeader from "../chatDashboard/component/ChatHeader";
 
 const ContactChat = () => {
+
+  
+  
+
   return (
     <main className="relative w-full h-screen">
       <ChatHeader />

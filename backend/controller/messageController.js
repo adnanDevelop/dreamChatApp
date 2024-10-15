@@ -1,3 +1,4 @@
+import { User } from "../model/userModel.js";
 import { Message } from "../model/messageModel.js";
 import { Conversation } from "../model/conversationModel.js";
 import { errorHandler, responseHandler } from "../utils/handler.js";
@@ -10,18 +11,18 @@ export const sendMessage = async (req, res) => {
     const { message } = req.body;
 
     // // Check if the receiver is a friend of the sender
-    // const sender = await User.findById(senderId).populate("friends");
-    // const isFriend = sender.friends.some(
-    //   (friend) => friend._id.toString() === receiverId
-    // );
+    const sender = await User.findById(senderId).populate("friends");
+    const isFriend = sender.friends.some(
+      (friend) => friend._id.toString() === receiverId
+    );
 
-    // if (!isFriend) {
-    //   return errorHandler(
-    //     res,
-    //     403,
-    //     "You can only send messages to your friends."
-    //   );
-    // }
+    if (!isFriend) {
+      return errorHandler(
+        res,
+        403,
+        "You can only send messages to your friends."
+      );
+    }
 
     // Check if conversation already exists
     let gotConversation = await Conversation.findOne({
@@ -63,14 +64,13 @@ export const getMessage = async (req, res) => {
 
     const getMessage = await Conversation.findOne({
       participants: { $all: [senderId, receiverId] },
-    }).populate("messages");
+    }).populate([
+      { path: "messages" },
+      { path: "participants", select: "fullName email" },
+      // { path: "receiverId", select: "fullName email" },
+    ]);
 
-    return responseHandler(
-      res,
-      200,
-      getMessage.messages,
-      "Data retreived successfully"
-    );
+    return responseHandler(res, 200, getMessage, "Data retreived successfully");
   } catch (error) {
     return errorHandler(res, 400, error.message);
   }

@@ -1,18 +1,19 @@
 import { BsThreeDotsVertical } from "react-icons/bs";
 // import { chatContent } from "../../modules/content";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useGetUserByIdQuery } from "../../redux/features/authApi";
+import { storeSenderId } from "../../redux/slices/conversationSlice";
 
 const AllContact = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-
   const { data: userData, isLoading } = useGetUserByIdQuery({ id: user?._id });
 
   return (
     <main>
       <div className="flex items-center justify-between mt-[30px]">
-        <h4 className="text-lg font-semibold text-light font-poppin">
+        <h4 className="text-lg font-medium text-light font-poppin">
           All Chats
         </h4>
 
@@ -59,7 +60,10 @@ const AllContact = () => {
           userData?.data?.friends.map((item, index) => (
             <div
               key={index}
-              className="flex items-center justify-between w-full p-4 mb-3 bg-black border-2 border-transparent rounded-md transitions hover:border-primary"
+              className="flex items-center justify-between w-full p-4 mb-3 bg-black border-2 border-transparent rounded-md cursor-pointer transitions hover:border-primary"
+              onClick={() => {
+                dispatch(storeSenderId(item?._id));
+              }}
             >
               {/* Avator section */}
               <div className="flex items-center gap-3 text-light">
@@ -68,7 +72,9 @@ const AllContact = () => {
                     <img src={item.profilePhoto} />
                   </div>
                 </div>
-                <h4 className="text-lg font-medium font-poppin">{item?.fullName}</h4>
+                <h4 className="text-lg font-medium font-poppin">
+                  {item?.fullName}
+                </h4>
               </div>
               <div>
                 <p className="text-xs text-white">{item?.date}</p>
