@@ -41,7 +41,7 @@ const ChatHeader = ({ userData }) => {
             )
           )}
         </div>
-        <HeaderDropdown />
+        <HeaderDropdown userData={userData} />
       </div>
     </section>
   );

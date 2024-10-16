@@ -1,6 +1,36 @@
+import { toast } from "react-toastify";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
-const HeaderDropdown = () => {
+import {
+  useAddFavrouteMutation,
+  useListFavouritesQuery,
+} from "../../../redux/features/favouriteContactApi";
+import { useSelector } from "react-redux";
+
+// eslint-disable-next-line react/prop-types
+const HeaderDropdown = ({ userData }) => {
+  const { user } = useSelector((state) => state.auth);
+  const [addFavouriteContact] = useAddFavrouteMutation();
+  const { data: favouriteData } = useListFavouritesQuery({ id: user?._id });
+
+  console.log(favouriteData?.data, "favrouriteData");
+
+  const isContactExist = favouriteData?.data.filter(
+    // eslint-disable-next-line react/prop-types
+    (element) => element?._id === userData?._id
+  );
+  const submitData = () => {
+    // eslint-disable-next-line react/prop-types
+    addFavouriteContact({ id: userData?._id })
+      .unwrap()
+      .then((response) => {
+        toast.success(response?.message);
+      })
+      .catch((error) => {
+        toast.error(error.data.message);
+      });
+  };
+
   return (
     <div className="flex items-center justify-center">
       <div className="dropdown dropdown-end">
@@ -21,9 +51,14 @@ const HeaderDropdown = () => {
           <li className="transitions bg-transparent hover:bg-[#161616] mb-1.5  text-light rounded-md transitions hover:text-primary">
             <a className="p-2">Block</a>
           </li>
-          <li className="transitions bg-transparent hover:bg-[#161616] mb-1.5  text-light rounded-md transitions hover:text-primary">
-            <a className="p-2">Add To Favourite</a>
-          </li>
+          {!isContactExist && (
+            <li
+              className="transitions bg-transparent hover:bg-[#161616] mb-1.5  text-light rounded-md transitions hover:text-primary"
+              onClick={!isContactExist && submitData}
+            >
+              <a className="p-2">Add To Favourite</a>
+            </li>
+          )}
         </ul>
       </div>
     </div>

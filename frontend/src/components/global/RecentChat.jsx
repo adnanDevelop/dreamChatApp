@@ -1,61 +1,66 @@
+import { useState } from "react";
+
+// Icons
 import { FaUsers } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
-import { useGetFavouriteQuery } from "../../redux/features/recentChatApi";
+// Redux
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useListFavouritesQuery } from "../../redux/features/favouriteContactApi";
 
 const RecentChat = () => {
   const [hideRecentChat, setHidRecentChat] = useState(true);
 
   const { user } = useSelector((state) => state.auth);
-  const { data: favouriteContact, isLoading } = useGetFavouriteQuery({
+  const { data: favouriteContact, isLoading } = useListFavouritesQuery({
     id: user?._id,
   });
 
   return (
     <main>
-      <div className="flex items-center justify-between mt-[30px]">
-        <h4 className="text-lg font-medium text-light font-poppin">
-          Favourite Contact
-        </h4>
-        {/* Hide aur active contacts button */}
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="mt-0 text-xl text-light rounded-btn"
-          >
-            <BsThreeDotsVertical />
+      {favouriteContact?.data?.length > 0 && (
+        <div className="flex items-center justify-between mt-[30px]">
+          <h4 className="text-lg font-medium text-light font-poppin">
+            Favourite Contact
+          </h4>
+          {/* Hide aur active contacts button */}
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="mt-0 text-xl text-light rounded-btn"
+            >
+              <BsThreeDotsVertical />
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu dropdown-content bg-[#0d0d0d] border border-[#222224] rounded-md z-[1] mt-4 w-[200px] p-2.5 shadow"
+            >
+              <li className="bg-[#161616] flex items-center justify-center text-light rounded-md transitions hover:text-primary">
+                <a
+                  className="p-2"
+                  onClick={() => {
+                    setHidRecentChat(false);
+                  }}
+                >
+                  <FaRegEyeSlash className="text-lg" /> Hide Favourite Chats
+                </a>
+              </li>
+              <li className="bg-[#161616] flex items-center justify-center text-light rounded-md transitions hover:text-primary mt-1">
+                <a
+                  className="p-2"
+                  onClick={() => {
+                    setHidRecentChat(true);
+                  }}
+                >
+                  <FaUsers className="text-lg" /> Show Favourite Chats
+                </a>
+              </li>
+            </ul>
           </div>
-          <ul
-            tabIndex={0}
-            className="menu dropdown-content bg-[#0d0d0d] border border-[#222224] rounded-md z-[1] mt-4 w-[200px] p-2.5 shadow"
-          >
-            <li className="bg-[#161616] flex items-center justify-center text-light rounded-md transitions hover:text-primary">
-              <a
-                className="p-2"
-                onClick={() => {
-                  setHidRecentChat(false);
-                }}
-              >
-                <FaRegEyeSlash className="text-lg" /> Hide Favourite Chats
-              </a>
-            </li>
-            <li className="bg-[#161616] flex items-center justify-center text-light rounded-md transitions hover:text-primary mt-1">
-              <a
-                className="p-2"
-                onClick={() => {
-                  setHidRecentChat(true);
-                }}
-              >
-                <FaUsers className="text-lg" /> Show Favourite Chats
-              </a>
-            </li>
-          </ul>
         </div>
-      </div>
+      )}
 
       {/* Recent Chats */}
       {hideRecentChat ? (

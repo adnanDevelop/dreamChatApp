@@ -1,10 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { removeFavourite } from "../../../../backend/controller/favouriteContactController";
 
 const favouriteContactApi = createApi({
   reducerPath: "favouriteContactApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://localhost:3000/api/message`,
+    baseUrl: `http://localhost:3000/api/contact`,
     credentials: "include",
   }),
   tagTypes: ["favouriteContact"],
@@ -24,6 +23,7 @@ const favouriteContactApi = createApi({
       query: (payload) => ({
         url: `/remove-favourite/${payload.id}`,
         method: "PUT",
+        
       }),
       invalidatesTags: ["favouriteContact"],
     }),
@@ -41,7 +41,7 @@ const favouriteContactApi = createApi({
     // Delete Messages
     listFavourites: builder.query({
       query: (payload) => ({
-        url: `/get/${payload.id}`,
+        url: `/get-favourite/${payload.id}`,
         method: "GET",
       }),
       providesTags: ["favouriteContact"],

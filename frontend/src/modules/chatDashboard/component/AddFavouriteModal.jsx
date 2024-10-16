@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import Modal from "../ui/toast/Modal";
-
-import { useInviteUserMutation } from "../../redux/features/inviteApi";
 import { toast } from "react-toastify";
 
+import { useAddFavrouteMutation } from "../../../redux/features/favouriteContactApi";
+
 // eslint-disable-next-line react/prop-types
-const AddFavouriteModal = ({ id }) => {
+const RemoveFavourites = ({ id }) => {
   const {
     register,
     handleSubmit,
@@ -13,12 +13,12 @@ const AddFavouriteModal = ({ id }) => {
     formState: { errors },
   } = useForm();
 
-  const [inviteUser, { isLoading }] = useInviteUserMutation();
+  const [addFavouriteContact, { isLoading }] = useAddFavrouteMutation();
 
   const submitData = (data) => {
     const modal = document.getElementById(id);
 
-    inviteUser({ body: data })
+    addFavouriteContact({ body: data })
       .unwrap()
       .then((response) => {
         reset();
@@ -103,4 +103,4 @@ const AddFavouriteModal = ({ id }) => {
   );
 };
 
-export default AddFavouriteModal;
+export default RemoveFavourites;

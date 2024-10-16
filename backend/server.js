@@ -8,9 +8,9 @@ import cookieParser from "cookie-parser";
 
 // Routes Files
 import userRoute from "./routes/userRoute.js";
-import messageRoute from "./routes/messageRoute.js";
-import inviteRoute from "./routes/InviteRoute.js";
 import groupRoute from "./routes/groupRoute.js";
+import inviteRoute from "./routes/InviteRoute.js";
+import messageRoute from "./routes/messageRoute.js";
 import favouriteContactRoute from "./routes/favouriteContactRoute.js";
 
 // Configure CORS
