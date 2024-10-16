@@ -72,9 +72,7 @@ const AllContact = () => {
                     <img src={item.profilePhoto} />
                   </div>
                 </div>
-                <h4 className="text-lg font-medium font-poppin">
-                  {item?.fullName}
-                </h4>
+                <h4 className="text-lg capitalize">{item?.fullName}</h4>
               </div>
               <div>
                 <p className="text-xs text-white">{item?.date}</p>

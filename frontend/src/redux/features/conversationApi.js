@@ -19,9 +19,9 @@ const conversationApi = createApi({
     }),
 
     // Get Messages
-    getMessages: builder.query({
+    getMessagesById: builder.query({
       query: (payload) => ({
-        url: `/get/${payload.id}`,
+        url: `/get-messages/${payload.id}`,
         method: "GET",
       }),
       invalidatesTags: ["conversation"],
@@ -39,7 +39,7 @@ const conversationApi = createApi({
 });
 
 export const {
-  useGetMessagesQuery,
+  useGetMessagesByIdQuery,
   useSendMessageMutation,
   useDeleteMessageMutation,
 } = conversationApi;

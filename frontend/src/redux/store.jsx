@@ -1,16 +1,17 @@
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+
 // Slices
 import tabSlice from "./slices/tabSlice";
 import authSlice from "./slices/authSlice";
 import conversationSlice from "./slices/conversationSlice";
-
-import { configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query";
 
 // Apis
 import authApi from "./features/authApi";
 import inviteApi from "./features/inviteApi";
 import recentChatApi from "./features/recentChatApi";
 import conversationApi from "./features/conversationApi";
+import favouriteContactApi from "./features/favouriteContactApi";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     [inviteApi.reducerPath]: inviteApi.reducer,
     [recentChatApi.reducerPath]: recentChatApi.reducer,
     [conversationApi.reducerPath]: conversationApi.reducer,
+    [favouriteContactApi.reducerPath]: favouriteContactApi.reducer,
   },
 
   // Middlewares
@@ -30,7 +32,8 @@ const store = configureStore({
       authApi.middleware,
       inviteApi.middleware,
       recentChatApi.middleware,
-      conversationApi.middleware
+      conversationApi.middleware,
+      favouriteContactApi.middleware
     ),
 });
 

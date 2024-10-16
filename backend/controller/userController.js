@@ -257,13 +257,14 @@ export const getAllUsers = async (req, res) => {
 };
 
 // Get User by id
-
 export const getUserById = async (req, res) => {
   try {
     const userId = req.params.id;
-    const findUser = await User.findById({ _id: userId }).populate([
-      { path: "friends", select: "fullName userName email profilePhoto" },
-    ]);
+    const findUser = await User.findById({ _id: userId })
+      .populate([
+        { path: "friends", select: "fullName userName email profilePhoto" },
+      ])
+      .select("fullName profilePhoto userName createdAt updatedAt");
 
     if (!findUser) {
       return errorHandler(res, 404, "User not found");

@@ -37,13 +37,13 @@ const Login = () => {
   };
 
   return (
-    <main className=" w-full gradient sm:p-[40px] p-[20px] h-screen">
+    <main className=" w-full gradient sm:p-[40px] p-[20px] h-screen flex items-center justify-center flex-col">
       {/* Logo */}
       <img src="/image/logo.svg" className="block mx-auto" alt="" />
 
       {/* Form Section */}
       <form
-        className="block max-w-[500px] py-4 sm:px-5 px-4 shadow-md mx-auto bg-white rounded-lg mt-6"
+        className="block max-w-[500px] w-full py-4 sm:px-5 px-4 shadow-md mx-auto bg-white rounded-lg mt-6"
         onSubmit={handleSubmit(submitData)}
       >
         <h3 className="text-[28px] font-semibold black">Login</h3>

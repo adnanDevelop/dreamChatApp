@@ -1,4 +1,7 @@
-const ChatBody = () => {
+// eslint-disable-next-line react/prop-types
+const ChatBody = ({ messages }) => {
+  // eslint-disable-next-line react/prop-types
+  console.log(messages?.messages, "messages");
   return (
     <div className="h-[calc(100vh-60px)] overflow-y-auto pt-[70px] w-full text-white p-4 scrollbar">
       <div className="chat chat-start">
