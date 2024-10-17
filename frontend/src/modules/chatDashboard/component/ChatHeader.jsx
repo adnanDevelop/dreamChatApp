@@ -6,7 +6,7 @@ import HeaderDropdown from "./HeaderDropdown";
 // eslint-disable-next-line react/prop-types
 const ChatHeader = ({ userData }) => {
   return (
-    <section className="w-[calc(100%-450px)] h-[60px] px-4 py-2.5 bg-black z-[1] flex items-center justify-between border-b  border-b-[#6f5c5c39] fixed top-0 right-0">
+    <section className="w-[calc(100%-450px)] h-[60px] z-[12] px-4 py-2.5 bg-black flex items-center justify-between border-b border-b-[#6f5c5c39] fixed top-0 right-0">
       {/* User profile */}
       <div className="flex items-center gap-2">
         <div className={`avatar online`}>

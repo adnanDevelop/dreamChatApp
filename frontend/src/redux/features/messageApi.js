@@ -6,7 +6,7 @@ const messageApi = createApi({
     baseUrl: `http://localhost:3000/api/message`,
     credentials: "include",
   }),
-  tagTypes: ["users"],
+  tagTypes: ["userMessages"],
   endpoints: (builder) => ({
     // Send Message
     sentMessage: builder.mutation({

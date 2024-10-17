@@ -11,8 +11,6 @@ const AllContact = () => {
   const { senderId } = useSelector((state) => state.conversation);
   const { data: userData, isLoading } = useGetUserByIdQuery({ id: user?._id });
 
-  console.log(senderId, "senderId");
-
   return (
     <main>
       <div className="flex items-center justify-between mt-[30px]">

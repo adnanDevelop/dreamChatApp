@@ -1,16 +1,21 @@
+// Components
 import ChatBody from "../chatDashboard/component/ChatBody";
 import ChatFooter from "../chatDashboard/component/ChatFooter";
 import ChatHeader from "../chatDashboard/component/ChatHeader";
 
+// Redux
+import Invite from "../Invite/Invite";
 import { useSelector } from "react-redux";
 import { useGetUserByIdQuery } from "../../redux/features/authApi";
 import { useGetMessagesByIdQuery } from "../../redux/features/conversationApi";
-import Invite from "../Invite/Invite";
 const ContactChat = () => {
   const { senderId } = useSelector((state) => state.conversation);
-
   const { data: userData } = useGetUserByIdQuery({ id: senderId });
-  const { data: messageData } = useGetMessagesByIdQuery({
+  const {
+    data: messageData,
+    isLoading,
+    refetch,
+  } = useGetMessagesByIdQuery({
     id: senderId,
   });
 
@@ -21,8 +26,11 @@ const ContactChat = () => {
       ) : (
         <div>
           <ChatHeader userData={userData?.data} />
-          <ChatBody messages={messageData?.data} />
-          <ChatFooter />
+          <ChatBody
+            isLoading={isLoading}
+            messageData={messageData?.data?.messages}
+          />
+          <ChatFooter senderId={senderId} refetch={refetch} />
         </div>
       )}
     </main>

@@ -65,8 +65,15 @@ export const getMessage = async (req, res) => {
     const getMessage = await Conversation.findOne({
       participants: { $all: [senderId, receiverId] },
     }).populate([
-      { path: "messages" },
-      { path: "participants", select: "fullName email" },
+      {
+        path: "messages",
+        populate: {
+          path: "senderId",
+          select: "fullName profilePhoto createdAt",
+        },
+      },
+
+      // { path: "participants", select: "fullName email" },
       // { path: "receiverId", select: "fullName email" },
     ]);
 
