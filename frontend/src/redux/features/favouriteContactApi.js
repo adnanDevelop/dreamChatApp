@@ -18,27 +18,17 @@ const favouriteContactApi = createApi({
       invalidatesTags: ["favouriteContact"],
     }),
 
-    // Get Messages
+    // Remove Favourites
     removeFavourite: builder.mutation({
       query: (payload) => ({
-        url: `/remove-favourite`,
+        url: `/remove-favourite/${payload.id}`,
         method: "PUT",
         body: payload.body,
       }),
       invalidatesTags: ["favouriteContact"],
     }),
 
-    // Delete Messages
-    deleteAllFavourite: builder.mutation({
-      query: (payload) => ({
-        url: `/delete`,
-        method: "DELETE",
-        body: payload.body,
-      }),
-      invalidatesTags: ["favouriteContact"],
-    }),
-
-    // Delete Messages
+    // List Favourites
     listFavourites: builder.query({
       query: (payload) => ({
         url: `/get-favourite/${payload.id}`,
@@ -53,7 +43,6 @@ export const {
   useListFavouritesQuery,
   useAddFavrouteMutation,
   useRemoveFavouriteMutation,
-  useDeleteAllFavouriteMutation,
 } = favouriteContactApi;
 
 export default favouriteContactApi;

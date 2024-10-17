@@ -29,17 +29,21 @@ const RemoveFavouriteModal = ({ id }) => {
     }
   };
 
-  const submitData = () => {
-    const ids = {
-      ids: selectedIds,
-    };
+  const submitData = (event) => {
+    event.preventDefault();
+
     const modal = document.getElementById(id);
-    removeFavourites({ body: ids })
+    removeFavourites({
+      body: {
+        ids: selectedIds,
+      },
+      id: user?._id,
+    })
       .unwrap()
       .then((response) => {
         setSelectedIds([]);
         if (modal) modal.close();
-        toast.success(response?.data);
+        toast.success(response?.message);
       })
       .catch((error) => {
         toast.error(error.data.message);

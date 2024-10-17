@@ -8,7 +8,10 @@ import { storeSenderId } from "../../redux/slices/conversationSlice";
 const AllContact = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { senderId } = useSelector((state) => state.conversation);
   const { data: userData, isLoading } = useGetUserByIdQuery({ id: user?._id });
+
+  console.log(senderId, "senderId");
 
   return (
     <main>
@@ -60,7 +63,11 @@ const AllContact = () => {
           userData?.data?.friends.map((item, index) => (
             <div
               key={index}
-              className="flex items-center justify-between w-full p-4 mb-3 bg-black border-2 border-transparent rounded-md cursor-pointer transitions hover:border-primary"
+              className={`flex items-center justify-between w-full p-4 mb-3  border-2 border-transparent rounded-md cursor-pointer transitions ${
+                senderId === item?._id
+                  ? "bg-black"
+                  : "bg-transparent hover:bg-black"
+              }`}
               onClick={() => {
                 dispatch(storeSenderId(item?._id));
               }}

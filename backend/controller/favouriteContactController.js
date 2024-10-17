@@ -38,8 +38,9 @@ export const addFavourite = async (req, res) => {
 // Unfavourite Contact controller
 export const removeFavourite = async (req, res) => {
   try {
-    const userId = req.id;
+    // const userId = req.id;
     const { ids } = req.body;
+    const userId = req.params.id;
 
     const findUser = await FavouriteContact.findOne({ userId });
 
@@ -64,22 +65,6 @@ export const removeFavourite = async (req, res) => {
     });
   } catch (error) {
     errorHandler(res, 400, error.message);
-  }
-};
-
-// Delete all favourite   conroller
-export const deleteAllFavourite = async (req, res) => {
-  try {
-    const userId = req.id;
-    const deleteContacts = await FavouriteContact.deleteOne({ userId });
-
-    if (deleteContacts.deletedCount === 0) {
-      return errorHandler(res, 404, "User's favourites not found.");
-    } else {
-      return responseHandler(res, 200, "All contacts removed from favourites.");
-    }
-  } catch (error) {
-    return errorHandler(res, 400, error.message);
   }
 };
 

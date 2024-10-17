@@ -9,6 +9,7 @@ import conversationSlice from "./slices/conversationSlice";
 // Apis
 import authApi from "./features/authApi";
 import inviteApi from "./features/inviteApi";
+import messageApi from "./features/messageApi";
 import recentChatApi from "./features/recentChatApi";
 import conversationApi from "./features/conversationApi";
 import favouriteContactApi from "./features/favouriteContactApi";
@@ -21,6 +22,7 @@ const store = configureStore({
     // Apis
     [authApi.reducerPath]: authApi.reducer,
     [inviteApi.reducerPath]: inviteApi.reducer,
+    [messageApi.reducerPath]: messageApi.reducer,
     [recentChatApi.reducerPath]: recentChatApi.reducer,
     [conversationApi.reducerPath]: conversationApi.reducer,
     [favouriteContactApi.reducerPath]: favouriteContactApi.reducer,
@@ -31,6 +33,7 @@ const store = configureStore({
     getDefaultMiddleware().concat(
       authApi.middleware,
       inviteApi.middleware,
+      messageApi.middleware,
       recentChatApi.middleware,
       conversationApi.middleware,
       favouriteContactApi.middleware

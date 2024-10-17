@@ -4,12 +4,14 @@ import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 // Redux
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { storeSenderId } from "../../redux/slices/conversationSlice";
 import { useListFavouritesQuery } from "../../redux/features/favouriteContactApi";
 import RemoveFavouriteModal from "../../modules/chatDashboard/component/RemoveFavouriteModal";
 
 const RecentChat = () => {
   const [hideRecentChat, setHidRecentChat] = useState(true);
+  const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
   const { data: favouriteContact, isLoading } = useListFavouritesQuery({
@@ -86,7 +88,10 @@ const RecentChat = () => {
             favouriteContact?.data.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center justify-center gap-2"
+                className="flex flex-col items-center justify-center gap-2 cursor-pointer"
+                onClick={() => {
+                  dispatch(storeSenderId(item?._id));
+                }}
               >
                 <div className="avatar online">
                   <div className="w-[50px] rounded-full">
