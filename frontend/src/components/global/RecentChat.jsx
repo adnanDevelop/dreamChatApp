@@ -1,13 +1,12 @@
 import { useState } from "react";
 
 // Icons
-import { FaUsers } from "react-icons/fa";
-import { FaRegEyeSlash } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 // Redux
 import { useSelector } from "react-redux";
 import { useListFavouritesQuery } from "../../redux/features/favouriteContactApi";
+import RemoveFavouriteModal from "../../modules/chatDashboard/component/RemoveFavouriteModal";
 
 const RecentChat = () => {
   const [hideRecentChat, setHidRecentChat] = useState(true);
@@ -35,26 +34,40 @@ const RecentChat = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu dropdown-content bg-[#0d0d0d] border border-[#222224] rounded-md z-[1] mt-4 w-[200px] p-2.5 shadow"
+              className="menu dropdown-content bg-[#0d0d0d] border border-[#222224] rounded-md z-[1] mt-4 w-[180px] p-2.5 shadow"
             >
-              <li className="bg-[#161616] flex items-center justify-center text-light rounded-md transitions hover:text-primary">
+              <li className="bg-[#161616] text-light rounded-md transitions hover:text-primary">
                 <a
-                  className="p-2"
+                  className="p-2 ps-3"
                   onClick={() => {
                     setHidRecentChat(false);
                   }}
                 >
-                  <FaRegEyeSlash className="text-lg" /> Hide Favourite Chats
+                  Hide Favourite Chats
+                  {/* <FaRegEyeSlash className="text-lg" /> */}
                 </a>
               </li>
-              <li className="bg-[#161616] flex items-center justify-center text-light rounded-md transitions hover:text-primary mt-1">
+              <li className="bg-[#161616] text-light rounded-md transitions hover:text-primary mt-1">
                 <a
-                  className="p-2"
+                  className="p-2 ps-3"
                   onClick={() => {
                     setHidRecentChat(true);
                   }}
                 >
-                  <FaUsers className="text-lg" /> Show Favourite Chats
+                  {/* <FaUsers className="text-lg" /> */}
+                  Show Favourite Chats
+                </a>
+              </li>
+              <li className="bg-[#161616]  text-light rounded-md transitions hover:text-primary mt-1">
+                <a
+                  className="p-2 ps-3"
+                  onClick={() => {
+                    const modal = document.getElementById("remove-favourite");
+                    if (modal) modal.showModal();
+                  }}
+                >
+                  {/* <FaUsers className="text-lg" /> */}
+                  Remove Favourite
                 </a>
               </li>
             </ul>
@@ -91,6 +104,8 @@ const RecentChat = () => {
           <p className="mt-4 text-sm text-white font-poppin">No Recent Chat</p>
         </div>
       )}
+
+      <RemoveFavouriteModal id="remove-favourite" />
     </main>
   );
 };

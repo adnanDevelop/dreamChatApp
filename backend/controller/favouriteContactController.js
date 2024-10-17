@@ -26,7 +26,10 @@ export const addFavourite = async (req, res) => {
     userFavourites.favouriteContacts.push(contactId);
     await userFavourites.save();
 
-    return responseHandler(res, 200, "Contact added to favourites.");
+    // return responseHandler(res, 200, "Contact added to favourites.");
+    return res
+      .status(201)
+      .json({ status: 200, message: "Contact added to favourites." });
   } catch (error) {
     errorHandler(res, 400, error.message);
   }
@@ -36,7 +39,7 @@ export const addFavourite = async (req, res) => {
 export const removeFavourite = async (req, res) => {
   try {
     const userId = req.id;
-    const contactId = req.params.id;
+    const { ids } = req.body;
 
     const findUser = await FavouriteContact.findOne({ userId });
 
@@ -44,18 +47,21 @@ export const removeFavourite = async (req, res) => {
       return errorHandler(res, 404, "User's favourites not found.");
     }
 
-    const isContactExist = findUser.favouriteContacts.includes(contactId);
+    const originalLength = findUser.favouriteContacts.length;
 
-    if (isContactExist) {
-      findUser.favouriteContacts = findUser.favouriteContacts.filter(
-        (contact) => contact.toString() !== contactId
-      );
-      await findUser.save();
+    // Filter out all the contact IDs that are present in the array 'ids'
+    findUser.favouriteContacts = findUser.favouriteContacts.filter(
+      (contact) => !ids.includes(contact.toString())
+    );
 
-      return res.status(200).json({ message: "Contact removed successfully" });
-    } else {
-      return errorHandler(res, 400, "Contact does not exist in favourites.");
-    }
+    await findUser.save();
+
+    return res.status(200).json({
+      message:
+        originalLength > 1
+          ? "Selected contacts removed successfully"
+          : "Contact removed from favourites.",
+    });
   } catch (error) {
     errorHandler(res, 400, error.message);
   }

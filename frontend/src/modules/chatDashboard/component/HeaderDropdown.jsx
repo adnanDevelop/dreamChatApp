@@ -13,12 +13,11 @@ const HeaderDropdown = ({ userData }) => {
   const [addFavouriteContact] = useAddFavrouteMutation();
   const { data: favouriteData } = useListFavouritesQuery({ id: user?._id });
 
-  console.log(favouriteData?.data, "favrouriteData");
-
-  const isContactExist = favouriteData?.data.filter(
+  const isContactExist = favouriteData?.data.some(
     // eslint-disable-next-line react/prop-types
     (element) => element?._id === userData?._id
   );
+
   const submitData = () => {
     // eslint-disable-next-line react/prop-types
     addFavouriteContact({ id: userData?._id })
@@ -54,7 +53,7 @@ const HeaderDropdown = ({ userData }) => {
           {!isContactExist && (
             <li
               className="transitions bg-transparent hover:bg-[#161616] mb-1.5  text-light rounded-md transitions hover:text-primary"
-              onClick={!isContactExist && submitData}
+              onClick={submitData}
             >
               <a className="p-2">Add To Favourite</a>
             </li>

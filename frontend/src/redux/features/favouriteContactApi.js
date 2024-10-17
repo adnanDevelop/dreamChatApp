@@ -21,9 +21,9 @@ const favouriteContactApi = createApi({
     // Get Messages
     removeFavourite: builder.mutation({
       query: (payload) => ({
-        url: `/remove-favourite/${payload.id}`,
+        url: `/remove-favourite`,
         method: "PUT",
-        
+        body: payload.body,
       }),
       invalidatesTags: ["favouriteContact"],
     }),
