@@ -2,14 +2,24 @@ import { FaSearch, FaPhone } from "react-icons/fa";
 import { IoVideocamOutline } from "react-icons/io5";
 import { RiErrorWarningLine } from "react-icons/ri";
 import HeaderDropdown from "./HeaderDropdown";
+import { useSelector } from "react-redux";
 
 // eslint-disable-next-line react/prop-types
 const ChatHeader = ({ userData }) => {
+  const { onlineUser } = useSelector((state) => state.auth);
+
+  console.log(userData, "userData");
+
   return (
     <section className="w-[calc(100%-450px)] h-[60px] z-[12] px-4 py-2.5 bg-black flex items-center justify-between border-b border-b-[#6f5c5c39] fixed top-0 right-0">
       {/* User profile */}
       <div className="flex items-center gap-2">
-        <div className={`avatar online`}>
+        <div
+          className={`avatar ${
+            // eslint-disable-next-line react/prop-types
+            onlineUser.includes(userData?._id) ? "online" : ""
+          }`}
+        >
           <div className="w-[45px] rounded-full">
             <img
               // eslint-disable-next-line react/prop-types
@@ -24,7 +34,10 @@ const ChatHeader = ({ userData }) => {
             {/* eslint-disable-next-line react/prop-types */}
             {userData?.fullName || "Dummy"}
           </h5>
-          <p className="text-xs text-content">Online</p>
+          <p className="text-xs text-content">
+            {/* eslint-disable-next-line react/prop-types */}
+            {onlineUser.includes(userData?._id) ? "Online" : "Offline"}
+          </p>
         </div>
       </div>
       {/* Icons */}

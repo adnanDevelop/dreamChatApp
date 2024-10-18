@@ -1,5 +1,5 @@
 import express from "express";
-const app = express();
+import { app, server } from "./socket/socket.js";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
@@ -35,7 +35,7 @@ app.use("/api/contact", favouriteContactRoute);
 // Server running
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, async () => {
+server.listen(PORT, async () => {
   await connectDb();
   console.log(`Server is running at port no: ${PORT}`);
 });

@@ -9,7 +9,6 @@ const Layout = () => {
 
   const showSidebar = (value) => {
     setSidebarActive(value);
-    console.log(value, "value");
   };
 
   return (

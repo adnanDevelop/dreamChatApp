@@ -4,6 +4,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 // Slices
 import tabSlice from "./slices/tabSlice";
 import authSlice from "./slices/authSlice";
+import socketSlice from "./slices/socketSlice";
 import messageSlice from "./slices/messageSlice";
 import conversationSlice from "./slices/conversationSlice";
 
@@ -19,6 +20,7 @@ const store = configureStore({
   reducer: {
     tab: tabSlice,
     auth: authSlice,
+    socket: socketSlice,
     message: messageSlice,
     conversation: conversationSlice,
     // Apis

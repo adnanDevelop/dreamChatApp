@@ -3,12 +3,14 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useGetUserByIdQuery } from "../../redux/features/authApi";
+import { setTab } from "../../redux/slices/tabSlice";
 import { storeSenderId } from "../../redux/slices/conversationSlice";
 
 // eslint-disable-next-line react/prop-types
 const AllContact = ({ params }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, onlineUser } = useSelector((state) => state.auth);
+
   const { senderId } = useSelector((state) => state.conversation);
   const { data: userData, isLoading } = useGetUserByIdQuery({
     id: user?._id,
@@ -72,11 +74,16 @@ const AllContact = ({ params }) => {
               }`}
               onClick={() => {
                 dispatch(storeSenderId(item?._id));
+                dispatch(setTab("Chat"));
               }}
             >
               {/* Avator section */}
               <div className="flex items-center gap-3 text-light">
-                <div className={`avatar ${item?.active ? "online" : ""}`}>
+                <div
+                  className={`avatar ${
+                    onlineUser.includes(item?._id) ? "online" : ""
+                  }`}
+                >
                   <div className="w-[50px] rounded-full">
                     <img src={item.profilePhoto} />
                   </div>

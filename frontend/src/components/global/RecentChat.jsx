@@ -13,7 +13,7 @@ const RecentChat = () => {
   const [hideRecentChat, setHidRecentChat] = useState(true);
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state.auth);
+  const { user, onlineUser } = useSelector((state) => state.auth);
   const { data: favouriteContact, isLoading } = useListFavouritesQuery({
     id: user?._id,
   });
@@ -93,7 +93,11 @@ const RecentChat = () => {
                   dispatch(storeSenderId(item?._id));
                 }}
               >
-                <div className="avatar online">
+                <div
+                  className={`avatar ${
+                    onlineUser.includes(item?._id) ? "online" : ""
+                  }`}
+                >
                   <div className="w-[50px] rounded-full">
                     <img src={item?.profilePhoto} />
                   </div>

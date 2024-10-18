@@ -13,8 +13,8 @@ import { BiMessageAltDetail } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
 
 // Redux
-import { setTab } from "../../redux/slices/tabSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { setTab } from "../../redux/slices/tabSlice";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
