@@ -9,8 +9,6 @@ const Chat = () => {
   const handleSearch = (e) =>
     setParams({ search: e.target.value.toLowerCase() });
 
-  console.log(params, "search User");
-
   return (
     <>
       <ChatSearchBar handleSearch={handleSearch} params={params} />

@@ -10,7 +10,10 @@ const AllContact = ({ params }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { senderId } = useSelector((state) => state.conversation);
-  const { data: userData, isLoading } = useGetUserByIdQuery({ id: user?._id });
+  const { data: userData, isLoading } = useGetUserByIdQuery({
+    id: user?._id,
+    params,
+  });
 
   return (
     <main>

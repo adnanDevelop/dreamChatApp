@@ -74,6 +74,7 @@ const authApi = createApi({
       query: (payload) => ({
         url: `/user/${payload.id}`,
         method: "Get",
+        params: payload.params,
       }),
     }),
   }),
