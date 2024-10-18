@@ -41,7 +41,7 @@ const ChatBody = ({ messageData, isLoading }) => {
                     </p>
                   </div>
                   <div className="chat chat-end ">
-                    <div className="text-white bg-black chat-bubble before:hidden ">
+                    <div className="text-white bg-[#181818] chat-bubble before:hidden ">
                       {item.message}
                     </div>
                   </div>

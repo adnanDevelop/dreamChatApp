@@ -260,6 +260,7 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const userId = req.params.id;
+    const { search } = req.query;
     const findUser = await User.findById({ _id: userId })
       .populate([
         { path: "friends", select: "fullName userName email profilePhoto" },
@@ -268,9 +269,18 @@ export const getUserById = async (req, res) => {
 
     if (!findUser) {
       return errorHandler(res, 404, "User not found");
-    } else {
+    }
+
+    if (search) {
+      const filterUsers = findUser.friends.filter((user) => {
+        return user.fullName.toLowerCase().includes(search.toLowerCase());
+      });
+      findUser.friends = filterUsers;
+
       return responseHandler(res, 200, findUser, "Data retreived successfully");
     }
+
+    return responseHandler(res, 200, findUser, "Data retreived successfully");
   } catch (error) {
     return errorHandler(res, 400, error.message);
   }

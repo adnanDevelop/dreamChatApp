@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useGetUserByIdQuery } from "../../redux/features/authApi";
 import { storeSenderId } from "../../redux/slices/conversationSlice";
 
-const AllContact = () => {
+// eslint-disable-next-line react/prop-types
+const AllContact = ({ params }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { senderId } = useSelector((state) => state.conversation);

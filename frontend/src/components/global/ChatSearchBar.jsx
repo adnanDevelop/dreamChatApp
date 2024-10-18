@@ -4,7 +4,8 @@ import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import InviteFriendsModal from "./InviteFriendsModal";
 
-const ChatSearchBar = () => {
+// eslint-disable-next-line react/prop-types
+const ChatSearchBar = ({ handleSearch, params }) => {
   return (
     <main>
       <div className="flex items-center justify-between">
@@ -49,6 +50,9 @@ const ChatSearchBar = () => {
           type="text"
           className="w-full h-full bg-black focus:outline-none text-light px-2.5 text-sm rounded-tl-md rounded-bl-md"
           placeholder="Search For Contacts..."
+          // eslint-disable-next-line react/prop-types
+          value={params.search}
+          onChange={handleSearch}
         />
         <button className="w-[30px] h-full flex items-center justify-center text-light me-2">
           <FaSearch />
