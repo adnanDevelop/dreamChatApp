@@ -95,7 +95,7 @@ const RecentChat = () => {
               >
                 <div
                   className={`avatar ${
-                    onlineUser.includes(item?._id) ? "online" : ""
+                    onlineUser?.includes(item?._id) ? "online" : ""
                   }`}
                 >
                   <div className="w-[50px] rounded-full">

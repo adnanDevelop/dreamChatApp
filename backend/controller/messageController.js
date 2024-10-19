@@ -1,6 +1,7 @@
 import { User } from "../model/userModel.js";
 import { Message } from "../model/messageModel.js";
 import { Conversation } from "../model/conversationModel.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 import { errorHandler, responseHandler } from "../utils/handler.js";
 
 // Send message controller
@@ -37,17 +38,29 @@ export const sendMessage = async (req, res) => {
     }
 
     // Create a new message
-    const newMessage = await Message.create({
+    let newMessage = await Message.create({
       senderId,
       receiverId,
       message,
       conversationId: gotConversation._id,
     });
 
+    newMessage = await newMessage.populate({
+      path: "senderId",
+      select: "fullName profilePhoto createdAt",
+    });
+
     // Update conversation with new message
     if (newMessage) {
       gotConversation.messages.push(newMessage._id);
       await gotConversation.save();
+    }
+
+    // Socket.io
+    const receiverSocketId = getReceiverSocketId(receiverId);
+
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
     }
 
     return responseHandler(res, 200, newMessage, "Message sent successfully");
@@ -72,9 +85,6 @@ export const getMessage = async (req, res) => {
           select: "fullName profilePhoto createdAt",
         },
       },
-
-      // { path: "participants", select: "fullName email" },
-      // { path: "receiverId", select: "fullName email" },
     ]);
 
     return responseHandler(res, 200, getMessage, "Data retreived successfully");

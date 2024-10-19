@@ -129,7 +129,6 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     const isUserExist = await User.findOne({ email });
-
     if (!isUserExist) {
       return res.status(404).json({ message: "Invalid email address" });
     }

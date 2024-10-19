@@ -8,8 +8,6 @@ import { useSelector } from "react-redux";
 const ChatHeader = ({ userData }) => {
   const { onlineUser } = useSelector((state) => state.auth);
 
-  console.log(userData, "userData");
-
   return (
     <section className="w-[calc(100%-450px)] h-[60px] z-[12] px-4 py-2.5 bg-black flex items-center justify-between border-b border-b-[#6f5c5c39] fixed top-0 right-0">
       {/* User profile */}
@@ -17,7 +15,7 @@ const ChatHeader = ({ userData }) => {
         <div
           className={`avatar ${
             // eslint-disable-next-line react/prop-types
-            onlineUser.includes(userData?._id) ? "online" : ""
+            onlineUser?.includes(userData?._id) ? "online" : ""
           }`}
         >
           <div className="w-[45px] rounded-full">
@@ -36,7 +34,7 @@ const ChatHeader = ({ userData }) => {
           </h5>
           <p className="text-xs text-content">
             {/* eslint-disable-next-line react/prop-types */}
-            {onlineUser.includes(userData?._id) ? "Online" : "Offline"}
+            {onlineUser?.includes(userData?._id) ? "Online" : "Offline"}
           </p>
         </div>
       </div>

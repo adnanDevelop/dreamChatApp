@@ -1,10 +1,10 @@
 import express from "express";
-import { app, server } from "./socket/socket.js";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 import connectDb from "./db/db.js";
 import cookieParser from "cookie-parser";
+import { app, server } from "./socket/socket.js";
 
 // Routes Files
 import userRoute from "./routes/userRoute.js";

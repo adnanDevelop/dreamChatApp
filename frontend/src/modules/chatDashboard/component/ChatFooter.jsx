@@ -1,15 +1,21 @@
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+
+// Icons
 import { CiFolderOn } from "react-icons/ci";
 import { FaPaperPlane } from "react-icons/fa6";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
-import { useForm } from "react-hook-form";
 
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import { setMessage } from "../../../redux/slices/messageSlice";
 import { useSendMessageMutation } from "../../../redux/features/conversationApi";
-import { toast } from "react-toastify";
 
 // eslint-disable-next-line react/prop-types
 const ChatFooter = ({ senderId, refetch }) => {
+  const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
-
+  const { message } = useSelector((state) => state.message);
   const [sendMessage, { isLoading }] = useSendMessageMutation();
   const onSubmit = (data) => {
     reset();
@@ -18,9 +24,10 @@ const ChatFooter = ({ senderId, refetch }) => {
       body: data,
     })
       .unwrap()
-      .then(() => {
+      .then((response) => {
         reset();
         refetch();
+        dispatch(setMessage([...message, response?.data]));
       })
       .catch((error) => {
         toast.error(error.data.message);
