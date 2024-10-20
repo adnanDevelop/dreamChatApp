@@ -67,7 +67,7 @@ const AllContact = ({ params }) => {
           userData?.data?.friends.map((item, index) => (
             <div
               key={index}
-              className={`flex items-center justify-between w-full p-4 mb-3  border-2 border-transparent rounded-md cursor-pointer transitions ${
+              className={`flex items-center justify-between w-full md:p-4 p-3 mb-3  border-2 border-transparent rounded-md cursor-pointer transitions ${
                 senderId === item?._id
                   ? "bg-black"
                   : "bg-transparent hover:bg-black"

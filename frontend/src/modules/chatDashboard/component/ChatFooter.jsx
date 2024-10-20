@@ -35,7 +35,7 @@ const ChatFooter = ({ senderId, refetch }) => {
   };
 
   return (
-    <section className="w-[calc(100%-450px)] h-[60px] px-4 py-2.5 bg-black flex items-center justify-between border-t  border-t-[#6f5c5c39] fixed bottom-0 right-0">
+    <section className="xl:w-[calc(100%-450px)] lg:w-[calc(100%-420px)] h-[60px] px-4 py-2.5 bg-black flex items-center justify-between border-t  border-t-[#6f5c5c39] fixed bottom-0 right-0">
       <form
         className=" w-full h-[45px] rounded-md flex bg-[#181818] pe-2"
         onSubmit={handleSubmit(onSubmit)}

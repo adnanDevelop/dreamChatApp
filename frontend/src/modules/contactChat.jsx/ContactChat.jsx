@@ -51,7 +51,7 @@ const ContactChat = () => {
       {!userData?.data ? (
         <Invite />
       ) : (
-        <div>
+        <div className="hidden lg:block">
           <ChatHeader userData={userData?.data} />
           <ChatBody isLoading={isLoading} messageData={message} />
           <ChatFooter senderId={senderId} refetch={refetch} />

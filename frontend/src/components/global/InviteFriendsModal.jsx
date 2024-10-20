@@ -36,8 +36,8 @@ const InviteFriendsModal = ({ id }) => {
   return (
     <Modal id={id}>
       <div className="modal-box w-[400px] bg-[#181818]">
-        <h3 className=" font-bold text-center text-[25px] text-white mt-4">
-          Delete Account
+        <h3 className="font-semibold text-center text-[25px] text-white mt-4">
+          Send Invitation
         </h3>
 
         <form className="w-full mt-4" onSubmit={handleSubmit(submitData)}>

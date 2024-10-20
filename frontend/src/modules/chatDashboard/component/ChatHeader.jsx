@@ -9,7 +9,7 @@ const ChatHeader = ({ userData }) => {
   const { onlineUser } = useSelector((state) => state.auth);
 
   return (
-    <section className="w-[calc(100%-450px)] h-[60px] z-[12] px-4 py-2.5 bg-black flex items-center justify-between border-b border-b-[#6f5c5c39] fixed top-0 right-0">
+    <section className="xl:w-[calc(100%-450px)] lg:w-[calc(100%-420px)] h-[60px] z-[12] px-4 py-2.5 bg-black flex items-center justify-between border-b border-b-[#6f5c5c39] fixed top-0 right-0">
       {/* User profile */}
       <div className="flex items-center gap-2">
         <div

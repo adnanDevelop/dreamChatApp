@@ -21,7 +21,7 @@ const Layout = () => {
           showSideBar={showSidebar}
         />
       </div>
-      <div className={`flex flex-col flex-1 overflow-x-auto`}>
+      <div className={` flex flex-col flex-1 overflow-x-auto`}>
         {/* <div> */}
         <div className="relative flex-1">
           <Outlet />
